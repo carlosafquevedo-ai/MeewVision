@@ -19,7 +19,7 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
   - Tinta (fundo escuro): `#1B1417`; superfície escura: `#241B1F` / `#2A2024`
   - Creme (logótipo, fundos claros): `#F1EBDF`; creme 2: `#E6DECF`
   - Tomate (botão principal `.btn-cta`: hero, "Como Trabalhamos" e formulário; hover creme): `#E4502E`
-  - Mostarda (detalhes, foco, etiquetas mono, linha da secção atual no menu): `#F2C14E`
+  - Mostarda (detalhes, foco, etiquetas mono): `#F2C14E`
   - Texto secundário sobre escuro: `#CFC4BB` / `#B8ACA4`; sobre claro: `#5E524D`
 - **Tipografia (Google Fonts):** Bricolage Grotesque (títulos e texto) + IBM Plex Mono (etiquetas pequenas).
 - **Tom:** moderno, profissional, com 3D e interatividade. Nada de estética "template" nem de sinais de site feito por IA (evitar gradientes chamativos, emoji, cartões iguais com a mesma sombra, rótulos em maiúsculas).
@@ -27,8 +27,8 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 
 ## Estrutura da página (ordem atual)
 
-1. **Menu** em cápsula flutuante (fixo no topo; fica sólido e mais compacto depois do hero; o link da secção atual acende com uma linha mostarda por baixo), com ícones do Instagram e do Vimeo à esquerda do CTA, + menu móvel em ecrã inteiro.
-2. **Hero "visor de câmara":** fotografia com zoom lento (preparado para vídeo), moldura de vidro, marcas de enquadramento, REC com timecode a correr, quadrado de foco "AF" que segue o rato, título, subtítulo, 3 CTAs e um cartão de vidro com os serviços.
+1. **Menu** em cápsula flutuante (fixo no topo; fica sólido e mais compacto depois do hero; o link da secção atual acende com uma linha branca (creme) por baixo), com ícones do Instagram e do Vimeo à esquerda do CTA, + menu móvel em ecrã inteiro.
+2. **Hero "visor de câmara":** fotografia com zoom lento (preparado para vídeo), moldura de vidro, marcas de enquadramento, REC com timecode a correr, quadrado de foco "AF" que segue o rato, título, subtítulo, botão "Ver Projetos" (leva a Outros Projetos), botão secundário "Ver todos os Vídeos" (abre o Vimeo) e um cartão de vidro com os serviços.
 3. **Os nossos serviços (`#servicos`, etiqueta "[Vídeos, Reels e Fotografias]"):** "Os nossos serviços" + carrossel de 8 cartões com setas.
 4. **Marcas que já confiaram em nós:** faixa compacta (etiqueta à esquerda + cápsulas a deslizar da direita para a esquerda, inspirada no TrustStrip do portfólio do Carlos) com os clientes do portfólio; pausa com o rato por cima; com `prefers-reduced-motion` fica parada e desliza com o dedo/scroll. Dados em `BRANDS` no topo de `js/main.js`.
 5. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.

@@ -57,9 +57,9 @@ img{display:block}
 .nav-links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
 .nav-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;text-decoration:none;font-size:15px;font-weight:500;color:#E6DECF;transition:background-color .2s,color .2s}
 .nav-links a:hover{background:rgba(241,235,223,.1);color:#FFFFFF}
-/* secção atual: link aceso com uma linha mostarda por baixo do texto */
+/* secção atual: link aceso com uma linha creme por baixo do texto */
 .nav-links a{position:relative}
-.nav-links a::after{content:"";position:absolute;left:16px;right:16px;bottom:8px;height:2px;border-radius:2px;background:#F2C14E;transform:scaleX(0);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.nav-links a::after{content:"";position:absolute;left:16px;right:16px;bottom:8px;height:2px;border-radius:2px;background:#F1EBDF;transform:scaleX(0);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
 .nav-links a[aria-current="true"]{color:#FFFFFF}
 .nav-links a[aria-current="true"]::after{transform:scaleX(1)}
 .nav-cta{display:flex;align-items:center;gap:8px}
@@ -100,9 +100,12 @@ img{display:block}
 .hero h1 .ln{display:block}
 .hero-sub{margin:24px 0 0;max-width:52ch;font-size:19px;line-height:1.5;color:#E0D6CD;text-shadow:0 1px 16px rgba(20,15,17,.6);animation:up 1s .35s cubic-bezier(.2,.7,.2,1) both}
 .hero-ctas{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:32px;animation:up 1s .5s cubic-bezier(.2,.7,.2,1) both}
-.watch{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 8px;background:transparent;border:0;color:#F1EBDF;font:500 15px/1 "IBM Plex Mono",monospace;text-decoration:none;cursor:pointer}
-.watch span.pd{width:44px;height:44px;border-radius:999px;border:1.5px solid rgba(241,235,223,.5);display:inline-flex;align-items:center;justify-content:center;transition:background-color .25s,border-color .25s,color .25s}
-.watch:hover span.pd{background:#F1EBDF;color:#1B1417;border-color:#F1EBDF}
+/* botão secundário do hero: contorno claro com ícone de play num círculo; ao passar o rato fica creme */
+.btn-watch{min-height:56px;padding:0 24px 0 8px;gap:12px;font-size:17px;background:rgba(241,235,223,.08);color:#F1EBDF;border-color:rgba(241,235,223,.45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.btn-watch .pd{display:grid;place-items:center;width:40px;height:40px;border-radius:999px;background:#F1EBDF;color:#1B1417;transition:background-color .25s,color .25s,transform .35s cubic-bezier(.2,.7,.2,1)}
+.btn-watch .pd svg{margin-left:2px}
+.btn-watch:hover{background:#F1EBDF;color:#1B1417;border-color:#F1EBDF}
+.btn-watch:hover .pd{background:#E4502E;color:#1B1417;transform:scale(1.06)}
 .hud-card{grid-column:9 / span 4;justify-self:end;width:100%;max-width:360px;padding:18px;border-radius:20px;background:linear-gradient(160deg,rgba(241,235,223,.2),rgba(241,235,223,.06));border:1px solid rgba(241,235,223,.28);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);box-shadow:0 30px 60px -30px rgba(0,0,0,.7);animation:up 1s .6s cubic-bezier(.2,.7,.2,1) both}
 .hud-card-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#E6DECF;padding:0 4px 12px;border-bottom:1px solid rgba(241,235,223,.18)}
 .hud-card ul{list-style:none;margin:8px 0 0;padding:0}
