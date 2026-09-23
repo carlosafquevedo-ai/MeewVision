@@ -31,12 +31,12 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 2. **Hero "visor de câmara":** fotografia com zoom lento (preparado para vídeo), moldura de vidro, marcas de enquadramento, REC com timecode a correr, quadrado de foco "AF" que segue o rato, título, subtítulo, 3 CTAs e um cartão de vidro com os serviços.
 3. **Os nossos serviços (`#servicos`, etiqueta "[Vídeos, Reels e Fotografias]"):** "Os nossos serviços" + carrossel de 8 cartões com setas.
 4. **Marcas que já confiaram em nós:** faixa compacta (etiqueta à esquerda + cápsulas a deslizar da direita para a esquerda, inspirada no TrustStrip do portfólio do Carlos) com os clientes do portfólio; pausa com o rato por cima; com `prefers-reduced-motion` fica parada e desliza com o dedo/scroll. Dados em `BRANDS` no topo de `js/main.js`.
-5. **Quem Somos?:** colagem 3D + texto que se preenche com o scroll + números reais do portfólio (16 hotéis, 14 restaurantes, 9 marcas).
-6. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.
-7. **Com Quem Trabalhamos?:** 5 painéis que expandem (Restaurantes, Lojas, Hotéis, Empresas, Influencers).
+5. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.
+6. **Com Quem Trabalhamos?:** 5 painéis que expandem (Restaurantes, Lojas, Hotéis, Empresas, Influencers).
+7. **Quem Somos?:** colagem 3D + texto que se preenche com o scroll + números reais do portfólio (16 hotéis, 14 restaurantes, 9 marcas).
 8. **Como Trabalhamos:** 4 cartões em escada (01 mais baixo, 04 mais alto; degraus de 32 px).
 9. **Trabalho Selecionado:** destaque a toda a largura com 4 projetos. *Secção de teste (repete conteúdo do ponto 7).*
-10. **Outros Projetos:** grelha de nomes de clientes com filtro (Hotéis / Restaurantes / Marcas).
+10. **Outros Projetos:** cartões iguais e separados com inclinação 3D ao passar o rato; fotografia escurecida por trás e logótipo (ou nome, enquanto não houver logótipo) à frente; filtro Hotéis / Restaurantes / Marcas. Dados em `CLIENTS` (`js/main.js`).
 11. **Contacto:** fundo escuro; à esquerda título "Alavanque a sua marca.", "Fale Connosco." e lista de contactos diretos (email, telefone, Instagram, Vimeo) que fica fixa ao fazer scroll; à direita formulário num cartão, com "O que procura?" em caixas de seleção (7 serviços reais + "Outro", `name="servicos"`, colunas ajustam-se à largura), campos com validação e botão tomate.
 12. **Rodapé** compacto: logótipo + links numa linha; © e contactos (email, telefone) na linha de baixo.
 
@@ -65,7 +65,7 @@ As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais
 - [ ] **Formulário:** ainda não envia nada (há um `TODO` em `js/main.js`). Ligar a Formspree, Netlify Forms ou outro serviço.
 - [ ] **Escolher secções:** decidir entre "Com Quem Trabalhamos?" e "Trabalho Selecionado".
 - [ ] **Versão EN:** o público de hotelaria é internacional; considerar PT/EN.
-- [ ] **Logótipos dos clientes:** pedir ao cliente os logótipos (SVG ou PNG transparente) e colocá-los em `assets/img/logos/`. Na faixa "Marcas que já confiaram em nós", basta preencher `logo` em `BRANDS` (`js/main.js`); até lá aparecem os nomes. Também se podem usar na grelha "Outros Projetos".
+- [ ] **Logótipos dos clientes:** pedir ao cliente os logótipos (SVG ou PNG transparente) e colocá-los em `assets/img/logos/`. Na faixa "Marcas que já confiaram em nós", basta preencher `logo` em `BRANDS` (`js/main.js`); até lá aparecem os nomes. Também se podem usar na grelha "Outros Projetos". Na grelha "Outros Projetos", cada cliente em `CLIENTS` aceita `{ name, logo, img }`: `logo` substitui o nome (fica a branco) e `img` define a fotografia de fundo. **As fotografias de fundo atuais são provisórias** (imagens do portfólio usadas por categoria, não do projeto de cada cliente).
 - [ ] **SEO e partilha:** imagens Open Graph, `sitemap.xml`, dados estruturados (LocalBusiness).
 - [ ] **Publicação em WordPress (decidido):** o cliente tem de poder editar o conteúdo sozinho (textos, títulos, imagens, vídeos, ordem das secções) sem estragar o design. Plano: acabar o design aqui como site estático e, no fim, converter para um **tema WordPress à medida com ACF Pro** (blocos ACF no Gutenberg ou "Flexible Content"). Cada secção passa a ser um bloco com campos; `css/styles.css` e `js/main.js` mantêm-se quase iguais; as listas de `js/main.js` (`BRANDS`, `PROJECTS`, `FEATURED`, `CLIENTS`) passam a campos no painel; o formulário passa para Contact Form 7, WPForms ou Fluent Forms. Squarespace foi descartado: código próprio não fica editável pelo cliente e perdem-se os efeitos. Page builders (Elementor, Divi) também não: pesados e fáceis de desformatar. Alternativa considerada: Webflow (modo Editor), mas obriga a remontar o site. Falta escolher alojamento (ex.: SiteGround, Raiola, Hostinger).
 

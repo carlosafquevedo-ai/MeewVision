@@ -32,10 +32,14 @@
     'AQA Farina', 'Moss', 'Ayla', 'Avec Bakery', 'Ukino', 'EsteOeste', 'Bratus', 'La Firma', 'MJT Construction',
     'Restaurante OZ', 'Arriba Pub', 'Buffalo', 'SOI', 'Bar13 Aqaba', 'Buda Burguers', 'Yolo Jordan', 'ASNOVE'
   ].map(function (b) { return typeof b === 'string' ? { name: b, logo: null } : b; });
+  // Cartões de "Outros Projetos". Cada cliente pode ser só o nome ('Ayla') ou um objeto:
+  //   { name: 'Ayla', logo: 'assets/img/logos/ayla.svg', img: 'assets/img/…' }
+  // logo: aparece em vez do nome (fica a branco sobre a imagem). img: fotografia de fundo do cartão;
+  // sem img, usa-se uma das imagens da categoria (bgs), à vez.
   var CLIENTS = [
-    { label: 'Hotéis', names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
-    { label: 'Restaurantes', names: ['Palácio do Grilo', 'Arriba Pub', 'Lota da Esquina', 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
-    { label: 'Marcas', names: ['Volkswagen Portugal', 'Neida Ceramics', 'Flor da Selva', 'Embaixada da Austrália', 'Moss', 'Sandeman', 'MJT Construction', 'Yolo Jordan', 'The Lisbon Frame'] }
+    { label: 'Hotéis', bgs: ['pestana-salao', 'pestana-escadaria', 'pestana-rececao', 'pestana-piscina'], names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
+    { label: 'Restaurantes', bgs: ['lota-polvo', 'lota-prato', 'lota-sopa', 'lota-evento'], names: ['Palácio do Grilo', 'Arriba Pub', 'Lota da Esquina', 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
+    { label: 'Marcas', bgs: ['flor-torra', 'bpi-entrevista', 'flor-graos', 'bpi-gestor', 'flor-maos', 'influencer'], names: ['Volkswagen Portugal', 'Neida Ceramics', 'Flor da Selva', 'Embaixada da Austrália', 'Moss', 'Sandeman', 'MJT Construction', 'Yolo Jordan', 'The Lisbon Frame'] }
   ];
 
   /* ---------- Utilitário: escreve variáveis CSS uma vez por frame ---------- */
@@ -178,20 +182,36 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDur);
   }
 
-  /* ---------- Outros Projetos: filtro por categoria ---------- */
+  /* ---------- Outros Projetos: cartões 3D com filtro por categoria ---------- */
   var wall = $('.wall'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
   function setCat(i) {
     var c = CLIENTS[i];
     segBtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
     wall.innerHTML = '';
-    c.names.forEach(function (nm, k) {
-      var li = document.createElement('li'), sp = document.createElement('span');
-      li.style.animationDelay = (k * 0.03).toFixed(2) + 's'; sp.textContent = nm;
-      li.appendChild(sp); wall.appendChild(li);
+    c.names.forEach(function (item, k) {
+      var cl = typeof item === 'string' ? { name: item } : item;
+      var li = document.createElement('li'), card = document.createElement('div'), bg = document.createElement('img'), mark = document.createElement('span');
+      li.className = 'lcard'; li.style.animationDelay = (k * 0.03).toFixed(2) + 's';
+      card.className = 'lcard-in';
+      bg.className = 'lcard-bg'; bg.alt = ''; bg.loading = 'lazy'; bg.decoding = 'async';
+      bg.src = cl.img || 'assets/img/' + c.bgs[(k + Math.floor(k / 4)) % c.bgs.length] + '.jpg'; // desfasa uma imagem por linha para não repetir em coluna
+      mark.className = 'lcard-mark';
+      if (cl.logo) {
+        var logo = document.createElement('img');
+        logo.src = cl.logo; logo.alt = cl.name; logo.loading = 'lazy';
+        mark.appendChild(logo);
+      } else {
+        mark.textContent = cl.name;
+      }
+      card.appendChild(bg); card.appendChild(mark); li.appendChild(card); wall.appendChild(li);
+      bindTilt(li);
     });
     if (live) live.textContent = c.names.length + ' projetos em ' + c.label;
   }
-  if (wall) segBtns.forEach(function (b, k) { b.addEventListener('click', function () { setCat(k); }); });
+  if (wall) {
+    segBtns.forEach(function (b, k) { b.addEventListener('click', function () { setCat(k); }); });
+    setCat(0);
+  }
 
   /* ---------- Formulário de contacto ---------- */
   var form = $('.contact form');
