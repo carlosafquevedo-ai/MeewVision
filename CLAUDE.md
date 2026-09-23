@@ -39,6 +39,8 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 10. **Contacto:** fundo tinta (`#1B1417`, como o rodapé), com o cartão claro do formulário em contraste; à esquerda etiqueta, título grande em inglês "Let’s create something amazing together!" (pedido do Carlos) e "Conte-nos o que precisa e marcamos uma reunião."; à direita o formulário num cartão claro com brilho quente suave: "Fale Connosco." a cinzento, Nome | Email, Mensagem, "O que procura?" em caixas brancas (3 colunas; 7 serviços reais + "Outro", `name="servicos"`) e botão escuro "Vamos Falar?" com círculo tomate (`.btn-send`). No tablet e no telemóvel o título fica por cima do cartão.
 11. **Rodapé** compacto: logótipo + links do menu; linha de contactos diretos (Email, Telefone, Instagram, Vimeo, com etiqueta e seta; 4 colunas no computador, 2 no tablet, 1 no telemóvel); © MeewVision Creative Studio, Portugal.
 
+Extra: botão redondo "voltar ao topo" no canto inferior esquerdo (`.to-top`), que aparece depois de 35% de scroll da página.
+
 As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais ficam.
 
 ## Conteúdo: regras

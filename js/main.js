@@ -97,6 +97,27 @@
     menu.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
   }
 
+  /* ---------- Botão "voltar ao topo": aparece depois de 35% de scroll ---------- */
+  var toTop = $('.to-top');
+  if (toTop) {
+    var topTick = false;
+    var checkTop = function () {
+      topTick = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var on = max > 0 && window.scrollY / max >= 0.35;
+      toTop.classList.toggle('show', on);
+      toTop.tabIndex = on ? 0 : -1;  // fora do teclado e dos leitores de ecrã enquanto está escondido
+      toTop.setAttribute('aria-hidden', on ? 'false' : 'true');
+    };
+    window.addEventListener('scroll', function () { if (!topTick) { topTick = true; requestAnimationFrame(checkTop); } }, { passive: true });
+    window.addEventListener('resize', checkTop);
+    checkTop();
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: REDUCE ? 'auto' : 'smooth' });
+      var logo = $('.nav .logo'); if (logo) logo.focus({ preventScroll: true });
+    });
+  }
+
   /* ---------- Hero: visor de câmara (parallax, foco AF, timecode) ---------- */
   var hero = $('.hero');
   if (hero) {
