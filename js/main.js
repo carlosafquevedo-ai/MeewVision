@@ -1,0 +1,274 @@
+/* MeewVision Creative Studio — interatividade do site (JavaScript puro, sem dependências). */
+(function () {
+  'use strict';
+
+  var $ = function (sel, root) { return (root || document).querySelector(sel); };
+  var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  var mq = function (q) { try { return window.matchMedia(q).matches; } catch (e) { return false; } };
+
+  var REDUCE = mq('(prefers-reduced-motion: reduce)');
+  var CAN_TILT = mq('(hover: hover) and (pointer: fine)') && !REDUCE;
+
+  /* ---------- Dados ---------- */
+  var PROJECTS = [
+    { cat: 'Restaurantes', title: 'Lota da Esquina', tagline: 'Vibrante. Sofisticado. Elegante.', url: 'https://www.meewvision.com/lota-da-esquina' },
+    { cat: 'Lojas', title: 'Flor da Selva', tagline: 'Artesanal. Familiar. Autêntico. Exclusivo.', url: 'https://www.meewvision.com/flor-da-selva' },
+    { cat: 'Hotéis', title: 'Pestana Group', tagline: 'Exclusivo. Distinto. Elegante.', url: 'https://www.meewvision.com/pestanagroup' },
+    { cat: 'Empresas', title: 'BPI Gestão de Ativos', tagline: 'Profissional. Jovem. Dinâmica. Inspiradora.', url: 'https://www.meewvision.com/bpi-gestao-de-ativos' },
+    { cat: 'Influencers', title: 'ASNOVE', tagline: 'Criativa. Inspiradora. Simplista.', url: 'https://www.meewvision.com/portfolio1' }
+  ];
+  // Ordem dos cartões na galeria 3D -> índice do projeto (mesma ordem do HTML)
+  var RING_PROJECT = [2, 0, 1, 4, 2, 0, 1, 3, 2, 0, 1, 2];
+  var FEATURED = [
+    { p: 2, type: 'Reels, vídeo e fotografia' },
+    { p: 0, type: 'Reels, vídeo de evento e fotografia' },
+    { p: 1, type: 'Vídeo, reels e fotografia' },
+    { p: 3, type: 'Vídeo corporativo e entrevistas' }
+  ];
+  var CLIENTS = [
+    { label: 'Hotéis', names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
+    { label: 'Restaurantes', names: ['Palácio do Grilo', 'Arriba Pub', 'Lota da Esquina', 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
+    { label: 'Marcas', names: ['Volkswagen Portugal', 'Neida Ceramics', 'Flor da Selva', 'Embaixada da Austrália', 'Moss', 'Sandeman', 'MJT Construction', 'Yolo Jordan', 'The Lisbon Frame'] }
+  ];
+
+  /* ---------- Utilitário: escreve variáveis CSS uma vez por frame ---------- */
+  function rafVars(el) {
+    var id = 0;
+    return function (vars) {
+      cancelAnimationFrame(id);
+      id = requestAnimationFrame(function () { for (var k in vars) el.style.setProperty(k, vars[k]); });
+    };
+  }
+
+  /* ---------- Inclinação 3D genérica (colagem, palco, cartões, logótipo) ---------- */
+  function bindTilt(el) {
+    if (!CAN_TILT) return;
+    var rect = null, set = rafVars(el);
+    el.addEventListener('pointerenter', function () { rect = el.getBoundingClientRect(); });
+    el.addEventListener('pointermove', function (e) {
+      rect = rect || el.getBoundingClientRect();
+      set({ '--tx': ((e.clientX - rect.left) / rect.width - 0.5).toFixed(3), '--ty': ((e.clientY - rect.top) / rect.height - 0.5).toFixed(3) });
+    });
+    el.addEventListener('pointerleave', function () { rect = null; set({ '--tx': '0', '--ty': '0' }); });
+  }
+  $$('.collage, .stage3d, .step, .scard, .ag-img, .footer-logo').forEach(bindTilt);
+
+  /* ---------- Navegação: fundo sólido depois do hero + menu móvel ---------- */
+  var nav = $('.nav');
+  var heroBody = $('.hero-body');
+  if (nav && heroBody && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { nav.classList.toggle('solid', !en[0].isIntersecting); }, { rootMargin: '-90px 0px 0px 0px' }).observe(heroBody);
+  }
+  var menu = $('#menu'), menuBtn = $('#menu-btn'), menuClose = $('#menu-close');
+  function openMenu() { menu.hidden = false; menuBtn.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; menuClose.focus(); }
+  function closeMenu() { menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; menuBtn.focus(); }
+  if (menu && menuBtn) {
+    menuBtn.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
+    $$('a', menu).forEach(function (a) { a.addEventListener('click', closeMenu); });
+    menu.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+  }
+
+  /* ---------- Hero: visor de câmara (parallax, foco AF, timecode) ---------- */
+  var hero = $('.hero');
+  if (hero) {
+    var setHero = rafVars(hero);
+    hero.addEventListener('pointermove', function (e) {
+      if (!CAN_TILT) return;
+      var r = hero.getBoundingClientRect(), fx = e.clientX - r.left, fy = e.clientY - r.top;
+      hero.classList.add('aim');
+      setHero({ '--mx': (fx / r.width - 0.5).toFixed(3), '--my': (fy / r.height - 0.5).toFixed(3), '--fx': fx.toFixed(0) + 'px', '--fy': fy.toFixed(0) + 'px' });
+    });
+    hero.addEventListener('pointerleave', function () { hero.classList.remove('aim'); setHero({ '--mx': '0', '--my': '0' }); });
+    var tc = $('#tc');
+    if (tc && !REDUCE) {
+      var t0 = Date.now(), pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      setInterval(function () {
+        var ms = Date.now() - t0, f = Math.floor(ms / 40) % 25, s = Math.floor(ms / 1000);
+        tc.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60) + ':' + pad(f);
+      }, 40);
+    }
+  }
+
+  /* ---------- Setores (painéis que expandem) ---------- */
+  var sectors = $$('.sec');
+  function setSector(i) {
+    sectors.forEach(function (li, k) {
+      var on = k === i;
+      li.classList.toggle('on', on);
+      var hit = $('.sec-hit', li), link = $('.sec-body .btn', li), img = $('img', li);
+      hit.setAttribute('aria-expanded', on ? 'true' : 'false');
+      hit.tabIndex = on ? -1 : 0;
+      if (link) link.tabIndex = on ? 0 : -1;
+      if (img) img.alt = on ? (li.dataset.alt || img.alt || '') : '';
+    });
+  }
+  sectors.forEach(function (li, i) {
+    var img = $('img', li); if (img && img.alt) li.dataset.alt = img.alt;
+    $('.sec-hit', li).addEventListener('click', function () { setSector(i); });
+    li.addEventListener('pointerenter', function () { if (CAN_TILT) setSector(i); });
+  });
+
+  /* ---------- Galeria 3D (anel): arrastar, setas, clique ---------- */
+  var scene = $('.ring-scene'), rot = $('.ring-drag');
+  if (scene && rot) {
+    var deg = 0, drag = null, justDragged = false, setScene = rafVars(scene), setRot = rafVars(rot);
+    var apply = function () { rot.style.setProperty('--drag', deg + 'deg'); };
+    scene.addEventListener('pointerdown', function (e) { if (e.button === 0) drag = { x: e.clientX, start: deg, moved: false }; });
+    scene.addEventListener('pointermove', function (e) {
+      if (drag) {
+        var dx = e.clientX - drag.x;
+        if (!drag.moved && Math.abs(dx) > 6) { drag.moved = true; scene.classList.add('dragging'); }
+        if (drag.moved) { drag.cur = drag.start + dx * 0.22; setRot({ '--drag': drag.cur.toFixed(2) + 'deg' }); }
+        return;
+      }
+      if (!CAN_TILT) return;
+      var r = scene.getBoundingClientRect();
+      setScene({ '--tx': ((e.clientX - r.left) / r.width - 0.5).toFixed(3), '--ty': ((e.clientY - r.top) / r.height - 0.5).toFixed(3) });
+    });
+    var end = function () {
+      if (!drag) return;
+      scene.classList.remove('dragging');
+      if (drag.moved) {
+        justDragged = true; setTimeout(function () { justDragged = false; }, 80);
+        deg = Math.round((drag.cur === undefined ? drag.start : drag.cur) / 30) * 30; apply();
+      }
+      drag = null;
+    };
+    scene.addEventListener('pointerup', end);
+    scene.addEventListener('pointercancel', end);
+    scene.addEventListener('pointerleave', function () { setScene({ '--tx': '0', '--ty': '0' }); end(); });
+    var arrows = $$('.made-r .icon-btn');
+    if (arrows[0]) arrows[0].addEventListener('click', function () { deg += 30; apply(); });
+    if (arrows[1]) arrows[1].addEventListener('click', function () { deg -= 30; apply(); });
+    $$('.rcard', scene).forEach(function (a, i) {
+      a.addEventListener('click', function (e) {
+        if (justDragged) { e.preventDefault(); return; }
+        setSector(RING_PROJECT[i]);
+      });
+      a.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    });
+  }
+
+  /* ---------- Serviços: palco 3D com seletor ---------- */
+  var panels = $$('.spanel'), svcBtns = $$('.switch button');
+  var SIDE = {
+    0: 'transform: translate(-50%, -50%) translate3d(0, 0, 0) rotateY(0deg); z-index: 3; filter: none;',
+    1: 'transform: translate(-50%, -50%) translate3d(64%, 0, -300px) rotateY(-36deg); z-index: 2; filter: brightness(.5);',
+    2: 'transform: translate(-50%, -50%) translate3d(-64%, 0, -300px) rotateY(36deg); z-index: 2; filter: brightness(.5);'
+  };
+  var svc = 0;
+  function setSvc(i, focus) {
+    var n = panels.length; svc = ((i % n) + n) % n;
+    panels.forEach(function (el, k) {
+      var rel = (k - svc + n) % n;
+      el.setAttribute('style', SIDE[rel]);
+      el.classList.toggle('side', rel !== 0); el.classList.toggle('center', rel === 0);
+      el.setAttribute('aria-hidden', rel === 0 ? 'false' : 'true');
+      var hit = $('.sp-hit', el);
+      if (rel !== 0 && !hit) {
+        hit = document.createElement('button');
+        hit.className = 'sp-hit'; hit.type = 'button'; hit.tabIndex = -1;
+        hit.setAttribute('aria-label', 'Ver ' + $('h3', el).textContent);
+        hit.addEventListener('click', function () { setSvc(k); });
+        el.appendChild(hit);
+      } else if (rel === 0 && hit) { hit.remove(); }
+    });
+    svcBtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === svc ? 'true' : 'false'); });
+    if (focus && svcBtns[svc]) svcBtns[svc].focus();
+  }
+  if (panels.length) {
+    $$('.sp-hit').forEach(function (b) { b.remove(); });
+    setSvc(0);
+    svcBtns.forEach(function (b, k) { b.addEventListener('click', function () { setSvc(k); }); });
+    var sw = $('.switch');
+    if (sw) sw.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); setSvc(svc + 1, true); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); setSvc(svc - 1, true); }
+    });
+  }
+
+  /* ---------- Carrossel de serviços ---------- */
+  var track = $('#scar-track');
+  if (track) {
+    var step = function (dir) {
+      var card = $('.scard', track);
+      var w = card ? card.getBoundingClientRect().width + 18 : 340;
+      track.scrollBy({ left: dir * w, behavior: REDUCE ? 'auto' : 'smooth' });
+    };
+    var ctl = $$('.scar-ctl .icon-btn');
+    if (ctl[0]) ctl[0].addEventListener('click', function () { step(-1); });
+    if (ctl[1]) ctl[1].addEventListener('click', function () { step(1); });
+  }
+
+  /* ---------- Trabalho Selecionado (destaque) ---------- */
+  var feat = $('.feat');
+  if (feat) {
+    var imgs = $$('.feat-bg img', feat), dots = $$('.dots button', feat), fi = 0;
+    var h3 = $('.feat-title h3', feat), tl = $('.feat-title p', feat), dds = $$('.feat-meta dd', feat);
+    var go = $('.feat-go', feat), count = $('.feat-ctl .count', feat), box = $('.feat-title', feat);
+    var setFeat = function (i) {
+      var n = FEATURED.length; fi = ((i % n) + n) % n;
+      var f = FEATURED[fi], pr = PROJECTS[f.p];
+      imgs.forEach(function (im, k) { im.classList.toggle('on', k === fi); });
+      dots.forEach(function (d, k) { d.setAttribute('aria-current', k === fi ? 'true' : 'false'); });
+      h3.textContent = pr.title; tl.textContent = pr.tagline;
+      dds[0].textContent = pr.title; dds[1].textContent = pr.cat; dds[2].textContent = f.type;
+      go.href = pr.url; go.setAttribute('aria-label', 'Ver projeto completo: ' + pr.title);
+      count.textContent = '0' + (fi + 1) + ' / 0' + n;
+      box.style.animation = 'none'; void box.offsetWidth; box.style.animation = '';
+    };
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { setFeat(k); }); });
+    var fb = $$('.feat-ctl > .icon-btn', feat);
+    if (fb[0]) fb[0].addEventListener('click', function () { setFeat(fi - 1); });
+    if (fb[1]) fb[1].addEventListener('click', function () { setFeat(fi + 1); });
+  }
+
+  /* ---------- Outros Projetos: filtro por categoria ---------- */
+  var wall = $('.wall'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
+  function setCat(i) {
+    var c = CLIENTS[i];
+    segBtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
+    wall.innerHTML = '';
+    c.names.forEach(function (nm, k) {
+      var li = document.createElement('li'), sp = document.createElement('span');
+      li.style.animationDelay = (k * 0.03).toFixed(2) + 's'; sp.textContent = nm;
+      li.appendChild(sp); wall.appendChild(li);
+    });
+    if (live) live.textContent = c.names.length + ' projetos em ' + c.label;
+  }
+  if (wall) segBtns.forEach(function (b, k) { b.addEventListener('click', function () { setCat(k); }); });
+
+  /* ---------- Formulário de contacto ---------- */
+  $$('.chips .chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var on = !chip.classList.contains('on');
+      chip.classList.toggle('on', on); chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  });
+  var form = $('.contact form');
+  if (form) {
+    var showErr = function (name, msg) {
+      var input = form.elements[name], p = $('#e-' + name);
+      input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      p.textContent = msg || ''; p.hidden = !msg;
+    };
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nome = form.elements.nome.value.trim(), email = form.elements.email.value.trim();
+      var eN = nome ? '' : 'Escreva o seu nome.';
+      var eE = !email ? 'Escreva o seu email para podermos responder.' : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? '' : 'Confirme o email: falta o @ ou o domínio.');
+      showErr('nome', eN); showErr('email', eE);
+      if (eN) { form.elements.nome.focus(); return; }
+      if (eE) { form.elements.email.focus(); return; }
+      var btn = $('button[type="submit"]', form);
+      btn.disabled = true; btn.textContent = 'A enviar…';
+      // TODO: ligar a um serviço de envio (Formspree, Netlify Forms, API própria...).
+      setTimeout(function () {
+        var sent = $('.contact .sent');
+        $('[data-sent-name]', sent).textContent = nome.split(' ')[0];
+        form.hidden = true; sent.hidden = false; sent.focus();
+      }, 900);
+    });
+  }
+})();
