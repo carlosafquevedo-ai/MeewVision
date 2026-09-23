@@ -28,21 +28,17 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 ## Estrutura da página (ordem atual)
 
 1. **Menu** em cápsula flutuante (fica sólido depois do hero) + menu móvel em ecrã inteiro.
-2. **Hero "visor de câmara":** fotografia com zoom lento (preparado para vídeo), moldura de vidro, marcas de enquadramento, REC com timecode a correr, quadrado de foco "AF" que segue o rato, régua de exposição, etiquetas de setores, título, subtítulo, 3 CTAs e um cartão de vidro com os serviços.
-3. **Feito pela MeewVision:** galeria 3D em anel (arrastar, setas, clique leva ao projeto).
-4. **Atalhos** (Portfólio / Contactos / Quem Somos?). *Secção de teste.*
-5. **Faixa** vermelha a correr com os setores.
-6. **Quem Somos?:** colagem 3D + texto que se preenche com o scroll + números reais do portfólio (16 hotéis, 14 restaurantes, 9 marcas).
-7. **Os nossos serviços:** palco 3D com 3 painéis + seletor.
-8. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.
-9. **Estúdio (colagem sobreposta):** "Somos um Creative Studio." / "Alavanque a sua marca." *Secção de teste.*
-10. **Com Quem Trabalhamos?:** 5 painéis que expandem (Restaurantes, Lojas, Hotéis, Empresas, Influencers).
-11. **Carrossel de serviços:** 8 cartões com setas. *Secção de teste (repete conteúdo do ponto 7).*
-12. **Como Trabalhamos:** 4 cartões em escada (01 a 04).
-13. **Trabalho Selecionado:** destaque a toda a largura com 4 projetos. *Secção de teste (repete conteúdo do ponto 10).*
-14. **Outros Projetos:** grelha de nomes de clientes com filtro (Hotéis / Restaurantes / Marcas).
-15. **Contacto:** "Alavanque a sua marca." / "Fale Connosco." + formulário com validação.
-16. **Rodapé** com o logótipo em 3D.
+2. **Hero "visor de câmara":** fotografia com zoom lento (preparado para vídeo), moldura de vidro, marcas de enquadramento, REC com timecode a correr, quadrado de foco "AF" que segue o rato, título, subtítulo, 3 CTAs e um cartão de vidro com os serviços.
+3. **O que entregamos (serviços, `#servicos`):** "Vídeos, reels e fotografias." + carrossel de 8 cartões com setas.
+4. **Marcas que já confiaram em nós:** faixa compacta (etiqueta à esquerda + cápsulas a deslizar da direita para a esquerda, inspirada no TrustStrip do portfólio do Carlos) com os clientes do portfólio; pausa com o rato por cima; com `prefers-reduced-motion` fica parada e desliza com o dedo/scroll. Dados em `BRANDS` no topo de `js/main.js`.
+5. **Quem Somos?:** colagem 3D + texto que se preenche com o scroll + números reais do portfólio (16 hotéis, 14 restaurantes, 9 marcas).
+6. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.
+7. **Com Quem Trabalhamos?:** 5 painéis que expandem (Restaurantes, Lojas, Hotéis, Empresas, Influencers).
+8. **Como Trabalhamos:** 4 cartões em escada (01 a 04).
+9. **Trabalho Selecionado:** destaque a toda a largura com 4 projetos. *Secção de teste (repete conteúdo do ponto 7).*
+10. **Outros Projetos:** grelha de nomes de clientes com filtro (Hotéis / Restaurantes / Marcas).
+11. **Contacto:** "Alavanque a sua marca." / "Fale Connosco." + formulário com validação.
+12. **Rodapé** com o logótipo em 3D.
 
 As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais ficam.
 
@@ -52,7 +48,7 @@ As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais
 - Onde falta informação real, deixar um marcador visível entre [parênteses retos].
 - Textos que **não** vêm do site deles e têm de ser confirmados com o cliente:
   - "Como Trabalhamos" (os 4 passos; só a frase do passo 02 vem do site deles).
-  - Subtítulos de apoio escritos por nós (ex.: "Tudo o que a sua marca precisa para se destacar online…", "Veja o nosso trabalho em movimento.").
+  - Subtítulos de apoio escritos por nós (ex.: "Cada formato pensado para o canal onde vai viver…", "Veja o nosso trabalho em movimento.").
   - A imagem usada para ASNOVE/Influencers (`influencer.jpg`) é a capa da categoria Influencers do portfólio deles, não necessariamente do projeto ASNOVE.
 
 ## Contactos reais do cliente
@@ -67,15 +63,17 @@ As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais
 
 - [ ] **Vídeo do hero:** colocar `assets/video/hero.mp4` (15 a 30 s, 1080p, sem som, menos de 10 MB) e trocar o `<img>` do `.hero-media` pelo `<video>` indicado no comentário do `index.html`. O showreel de 50 s do site atual deles é uma boa fonte.
 - [ ] **Formulário:** ainda não envia nada (há um `TODO` em `js/main.js`). Ligar a Formspree, Netlify Forms ou outro serviço.
-- [ ] **Escolher secções:** decidir entre o palco 3D de serviços e o carrossel, e entre "Com Quem Trabalhamos?" e "Trabalho Selecionado". Remover também a secção de atalhos se não ficar.
+- [ ] **Escolher secções:** decidir entre "Com Quem Trabalhamos?" e "Trabalho Selecionado".
 - [ ] **Versão EN:** o público de hotelaria é internacional; considerar PT/EN.
-- [ ] **Logótipos dos clientes:** se o cliente os enviar, trocar os nomes da grelha "Outros Projetos" por logótipos.
+- [ ] **Logótipos dos clientes:** pedir ao cliente os logótipos (SVG ou PNG transparente) e colocá-los em `assets/img/logos/`. Na faixa "Marcas que já confiaram em nós", basta preencher `logo` em `BRANDS` (`js/main.js`); até lá aparecem os nomes. Também se podem usar na grelha "Outros Projetos".
 - [ ] **SEO e partilha:** imagens Open Graph, `sitemap.xml`, dados estruturados (LocalBusiness).
-- [ ] **Publicação:** Netlify, Vercel ou GitHub Pages; ou migrar para um framework (Astro/Next.js) se o site crescer para várias páginas (páginas de projeto).
+- [ ] **Publicação em WordPress (decidido):** o cliente tem de poder editar o conteúdo sozinho (textos, títulos, imagens, vídeos, ordem das secções) sem estragar o design. Plano: acabar o design aqui como site estático e, no fim, converter para um **tema WordPress à medida com ACF Pro** (blocos ACF no Gutenberg ou "Flexible Content"). Cada secção passa a ser um bloco com campos; `css/styles.css` e `js/main.js` mantêm-se quase iguais; as listas de `js/main.js` (`BRANDS`, `PROJECTS`, `FEATURED`, `CLIENTS`) passam a campos no painel; o formulário passa para Contact Form 7, WPForms ou Fluent Forms. Squarespace foi descartado: código próprio não fica editável pelo cliente e perdem-se os efeitos. Page builders (Elementor, Divi) também não: pesados e fáceis de desformatar. Alternativa considerada: Webflow (modo Editor), mas obriga a remontar o site. Falta escolher alojamento (ex.: SiteGround, Raiola, Hostinger).
 
 ## Notas técnicas
 
+- **Preparar para WordPress:** cada secção deve ficar autónoma (um `<section>` com o seu bloco de CSS e de JS, sem depender da ordem das outras) e o conteúdo repetido deve vir de dados (como `BRANDS`), para cada secção se converter diretamente num bloco ACF.
+- **Grelha:** todo o conteúdo alinha pelas mesmas duas linhas verticais. Tokens em `:root` no `css/styles.css`: `--content: 1312px` (largura máxima) e `--gutter` (64 px; 40 px até 1180 px; 20 px até 860 px). Dentro de `.wrap` isto é automático; em elementos a toda a largura (hero, carrossel, moldura do showreel) usar `max(var(--gutter), calc((100% - var(--content)) / 2))`. Não usar paddings laterais fixos em secções novas.
 - `js/main.js` está dividido por secções com comentários; cada efeito 3D escreve variáveis CSS (`--tx`, `--ty`, `--mx`, `--my`, `--drag`) uma vez por frame, sem re-render.
 - A lista de clientes de "Outros Projetos" e os projetos em destaque estão como dados no topo de `js/main.js`.
 - As animações de scroll usam `animation-timeline` (CSS) com `@supports`, por isso em browsers sem suporte simplesmente não aparecem.
-- Testar sempre em 1440 px, 1024 px e 390 px de largura, e com teclado (Tab, setas no seletor de serviços, Esc no menu).
+- Testar sempre em 1440 px, 1024 px e 390 px de largura, e com teclado (Tab, setas do carrossel de serviços, Esc no menu).

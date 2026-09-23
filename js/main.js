@@ -17,14 +17,21 @@
     { cat: 'Empresas', title: 'BPI Gestão de Ativos', tagline: 'Profissional. Jovem. Dinâmica. Inspiradora.', url: 'https://www.meewvision.com/bpi-gestao-de-ativos' },
     { cat: 'Influencers', title: 'ASNOVE', tagline: 'Criativa. Inspiradora. Simplista.', url: 'https://www.meewvision.com/portfolio1' }
   ];
-  // Ordem dos cartões na galeria 3D -> índice do projeto (mesma ordem do HTML)
-  var RING_PROJECT = [2, 0, 1, 4, 2, 0, 1, 3, 2, 0, 1, 2];
   var FEATURED = [
     { p: 2, type: 'Reels, vídeo e fotografia' },
     { p: 0, type: 'Reels, vídeo de evento e fotografia' },
     { p: 1, type: 'Vídeo, reels e fotografia' },
     { p: 3, type: 'Vídeo corporativo e entrevistas' }
   ];
+  // Marcas da faixa "Marcas que já confiaram em nós" (clientes reais do portfólio).
+  // Para mostrar o logótipo: colocar o ficheiro em assets/img/logos/ e preencher logo, ex. { name: 'Sandeman', logo: 'assets/img/logos/sandeman.svg' }
+  var BRANDS = [
+    'Pestana Group', 'Volkswagen Portugal', 'Lota da Esquina', 'Intercontinental Estoril', 'Flor da Selva', 'Sandeman',
+    'Palácio do Grilo', 'BPI Gestão de Ativos', 'Valverde Lisboa', 'Embaixada da Austrália', 'Soya Noodles', 'Almalusa Alfama',
+    'Neida Ceramics', 'Hotel Baía Cascais', 'La Gran Boca', 'Pousada de Lisboa', 'The Lisbon Frame', 'Condes de Azevedo',
+    'AQA Farina', 'Moss', 'Ayla', 'Avec Bakery', 'Ukino', 'EsteOeste', 'Bratus', 'La Firma', 'MJT Construction',
+    'Restaurante OZ', 'Arriba Pub', 'Buffalo', 'SOI', 'Bar13 Aqaba', 'Buda Burguers', 'Yolo Jordan', 'ASNOVE'
+  ].map(function (b) { return typeof b === 'string' ? { name: b, logo: null } : b; });
   var CLIENTS = [
     { label: 'Hotéis', names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
     { label: 'Restaurantes', names: ['Palácio do Grilo', 'Arriba Pub', 'Lota da Esquina', 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
@@ -40,7 +47,7 @@
     };
   }
 
-  /* ---------- Inclinação 3D genérica (colagem, palco, cartões, logótipo) ---------- */
+  /* ---------- Inclinação 3D genérica (colagem, cartões, logótipo) ---------- */
   function bindTilt(el) {
     if (!CAN_TILT) return;
     var rect = null, set = rafVars(el);
@@ -51,7 +58,7 @@
     });
     el.addEventListener('pointerleave', function () { rect = null; set({ '--tx': '0', '--ty': '0' }); });
   }
-  $$('.collage, .stage3d, .step, .scard, .ag-img, .footer-logo').forEach(bindTilt);
+  $$('.collage, .step, .scard, .footer-logo').forEach(bindTilt);
 
   /* ---------- Navegação: fundo sólido depois do hero + menu móvel ---------- */
   var nav = $('.nav');
@@ -109,85 +116,6 @@
     li.addEventListener('pointerenter', function () { if (CAN_TILT) setSector(i); });
   });
 
-  /* ---------- Galeria 3D (anel): arrastar, setas, clique ---------- */
-  var scene = $('.ring-scene'), rot = $('.ring-drag');
-  if (scene && rot) {
-    var deg = 0, drag = null, justDragged = false, setScene = rafVars(scene), setRot = rafVars(rot);
-    var apply = function () { rot.style.setProperty('--drag', deg + 'deg'); };
-    scene.addEventListener('pointerdown', function (e) { if (e.button === 0) drag = { x: e.clientX, start: deg, moved: false }; });
-    scene.addEventListener('pointermove', function (e) {
-      if (drag) {
-        var dx = e.clientX - drag.x;
-        if (!drag.moved && Math.abs(dx) > 6) { drag.moved = true; scene.classList.add('dragging'); }
-        if (drag.moved) { drag.cur = drag.start + dx * 0.22; setRot({ '--drag': drag.cur.toFixed(2) + 'deg' }); }
-        return;
-      }
-      if (!CAN_TILT) return;
-      var r = scene.getBoundingClientRect();
-      setScene({ '--tx': ((e.clientX - r.left) / r.width - 0.5).toFixed(3), '--ty': ((e.clientY - r.top) / r.height - 0.5).toFixed(3) });
-    });
-    var end = function () {
-      if (!drag) return;
-      scene.classList.remove('dragging');
-      if (drag.moved) {
-        justDragged = true; setTimeout(function () { justDragged = false; }, 80);
-        deg = Math.round((drag.cur === undefined ? drag.start : drag.cur) / 30) * 30; apply();
-      }
-      drag = null;
-    };
-    scene.addEventListener('pointerup', end);
-    scene.addEventListener('pointercancel', end);
-    scene.addEventListener('pointerleave', function () { setScene({ '--tx': '0', '--ty': '0' }); end(); });
-    var arrows = $$('.made-r .icon-btn');
-    if (arrows[0]) arrows[0].addEventListener('click', function () { deg += 30; apply(); });
-    if (arrows[1]) arrows[1].addEventListener('click', function () { deg -= 30; apply(); });
-    $$('.rcard', scene).forEach(function (a, i) {
-      a.addEventListener('click', function (e) {
-        if (justDragged) { e.preventDefault(); return; }
-        setSector(RING_PROJECT[i]);
-      });
-      a.addEventListener('dragstart', function (e) { e.preventDefault(); });
-    });
-  }
-
-  /* ---------- Serviços: palco 3D com seletor ---------- */
-  var panels = $$('.spanel'), svcBtns = $$('.switch button');
-  var SIDE = {
-    0: 'transform: translate(-50%, -50%) translate3d(0, 0, 0) rotateY(0deg); z-index: 3; filter: none;',
-    1: 'transform: translate(-50%, -50%) translate3d(64%, 0, -300px) rotateY(-36deg); z-index: 2; filter: brightness(.5);',
-    2: 'transform: translate(-50%, -50%) translate3d(-64%, 0, -300px) rotateY(36deg); z-index: 2; filter: brightness(.5);'
-  };
-  var svc = 0;
-  function setSvc(i, focus) {
-    var n = panels.length; svc = ((i % n) + n) % n;
-    panels.forEach(function (el, k) {
-      var rel = (k - svc + n) % n;
-      el.setAttribute('style', SIDE[rel]);
-      el.classList.toggle('side', rel !== 0); el.classList.toggle('center', rel === 0);
-      el.setAttribute('aria-hidden', rel === 0 ? 'false' : 'true');
-      var hit = $('.sp-hit', el);
-      if (rel !== 0 && !hit) {
-        hit = document.createElement('button');
-        hit.className = 'sp-hit'; hit.type = 'button'; hit.tabIndex = -1;
-        hit.setAttribute('aria-label', 'Ver ' + $('h3', el).textContent);
-        hit.addEventListener('click', function () { setSvc(k); });
-        el.appendChild(hit);
-      } else if (rel === 0 && hit) { hit.remove(); }
-    });
-    svcBtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === svc ? 'true' : 'false'); });
-    if (focus && svcBtns[svc]) svcBtns[svc].focus();
-  }
-  if (panels.length) {
-    $$('.sp-hit').forEach(function (b) { b.remove(); });
-    setSvc(0);
-    svcBtns.forEach(function (b, k) { b.addEventListener('click', function () { setSvc(k); }); });
-    var sw = $('.switch');
-    if (sw) sw.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight') { e.preventDefault(); setSvc(svc + 1, true); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); setSvc(svc - 1, true); }
-    });
-  }
-
   /* ---------- Carrossel de serviços ---------- */
   var track = $('#scar-track');
   if (track) {
@@ -222,6 +150,32 @@
     var fb = $$('.feat-ctl > .icon-btn', feat);
     if (fb[0]) fb[0].addEventListener('click', function () { setFeat(fi - 1); });
     if (fb[1]) fb[1].addEventListener('click', function () { setFeat(fi + 1); });
+  }
+
+  /* ---------- Marcas que já confiaram em nós (faixa contínua) ---------- */
+  var logos = $('#logos-track');
+  if (logos) {
+    // Duas cópias seguidas: a animação desloca -50% e recomeça sem salto. A cópia fica escondida dos leitores de ecrã.
+    [false, true].forEach(function (copy) {
+      BRANDS.forEach(function (b) {
+        var li = document.createElement('li');
+        if (copy) li.setAttribute('aria-hidden', 'true');
+        if (b.logo) {
+          var img = document.createElement('img');
+          img.src = b.logo; img.alt = b.name; img.loading = 'lazy'; img.decoding = 'async';
+          li.appendChild(img);
+        } else {
+          var sp = document.createElement('span');
+          sp.className = 'brand'; sp.textContent = b.name;
+          li.appendChild(sp);
+        }
+        logos.appendChild(li);
+      });
+    });
+    // Velocidade constante (~45 px/s), seja qual for o número de marcas
+    var setDur = function () { logos.style.setProperty('--logos-dur', Math.round(logos.scrollWidth / 2 / 45) + 's'); };
+    setDur();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDur);
   }
 
   /* ---------- Outros Projetos: filtro por categoria ---------- */
