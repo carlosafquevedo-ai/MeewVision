@@ -32,9 +32,9 @@
     'AQA Farina', 'Moss', 'Ayla', 'Avec Bakery', 'Ukino', 'EsteOeste', 'Bratus', 'La Firma', 'MJT Construction',
     'Restaurante OZ', 'Arriba Pub', 'Buffalo', 'SOI', 'Bar13 Aqaba', 'Buda Burguers', 'Yolo Jordan', 'ASNOVE'
   ].map(function (b) { return typeof b === 'string' ? { name: b, logo: null } : b; });
-  // Cartões de "Outros Projetos". Cada cliente pode ser só o nome ('Ayla') ou um objeto:
+  // Mosaico de "Outros Projetos". Cada cliente pode ser só o nome ('Ayla') ou um objeto:
   //   { name: 'Ayla', logo: 'assets/img/logos/ayla.svg', img: 'assets/img/…' }
-  // logo: aparece em vez do nome (fica a branco sobre a imagem). img: fotografia de fundo do cartão;
+  // logo: aparece em vez do nome (a branco sobre fotografia e tinta). img: fotografia do bloco (nos blocos com imagem);
   // sem img, usa-se uma das imagens da categoria (bgs), à vez.
   var CLIENTS = [
     { label: 'Hotéis', bgs: ['pestana-salao', 'pestana-escadaria', 'pestana-rececao', 'pestana-piscina'], names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
@@ -199,35 +199,52 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDur);
   }
 
-  /* ---------- Outros Projetos: cartões 3D com filtro por categoria ---------- */
-  var wall = $('.wall'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
-  function setCat(i) {
-    var c = CLIENTS[i];
-    segBtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
-    wall.innerHTML = '';
-    c.names.forEach(function (item, k) {
-      var cl = typeof item === 'string' ? { name: item } : item;
-      var li = document.createElement('li'), card = document.createElement('div'), bg = document.createElement('img'), mark = document.createElement('span');
-      li.className = 'lcard'; li.style.animationDelay = (k * 0.03).toFixed(2) + 's';
-      card.className = 'lcard-in';
-      bg.className = 'lcard-bg'; bg.alt = ''; bg.loading = 'lazy'; bg.decoding = 'async';
-      bg.src = cl.img || 'assets/img/' + c.bgs[(k + Math.floor(k / 4)) % c.bgs.length] + '.jpg'; // desfasa uma imagem por linha para não repetir em coluna
-      mark.className = 'lcard-mark';
-      if (cl.logo) {
-        var logo = document.createElement('img');
-        logo.src = cl.logo; logo.alt = cl.name; logo.loading = 'lazy';
-        mark.appendChild(logo);
-      } else {
-        mark.textContent = cl.name;
+  /* ---------- Outros Projetos: mosaico "bento" com filtro e "ver mais" ---------- */
+  var bento = $('.bento'), moreBtn = $('.bento-more .btn'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
+  var CAT_TAG = { 'Hotéis': 'hotel', 'Restaurantes': 'restaurante', 'Marcas': 'marca' };
+  // tamanho e cor de cada bloco, por ordem; o padrão de 8 preenche uma grelha 4x4 sem buracos
+  var BENTO = [['xl', 'img'], ['s', 'tomato'], ['tall', 'img'], ['s', 'ink'], ['wide', 'img'], ['tall', 'sand'], ['tall', 'img'], ['wide', 'ink']];
+  var FIRST = 8;
+  if (bento) {
+    var catIdx = 0, expanded = false;
+    var render = function () {
+      var c = CLIENTS[catIdx], names = expanded ? c.names : c.names.slice(0, FIRST), imgN = 0;
+      bento.innerHTML = '';
+      names.forEach(function (item, k) {
+        var cl = typeof item === 'string' ? { name: item } : item;
+        // grupos completos de 8 seguem o padrão; os restantes ficam em linhas de 4 e a última linha estica para não deixar buracos
+        var full = Math.floor(k / 8) < Math.floor(names.length / 8), pat = BENTO[k % 8], size = pat[0], kind = pat[1];
+        if (!full) {
+          var j = k - Math.floor(names.length / 8) * 8, rest = names.length % 8, m = rest % 4, inLast = j >= rest - m;
+          size = 's'; kind = (['img', 'sand', 'ink', 'tomato'])[j % 4];
+          if (m && inLast) size = m === 1 ? 'row' : m === 2 ? 'wide' : (j === rest - 1 ? 'wide' : 's');
+        }
+        var li = document.createElement('li');
+        li.className = 'tile ' + size + ' t-' + kind;
+        li.style.animationDelay = ((k % FIRST) * 0.05).toFixed(2) + 's';
+        var html = '<div class="tile-in">';
+        if (kind === 'img') { html += '<img class="tile-img" alt="" loading="lazy" decoding="async" src="' + (cl.img || 'assets/img/' + c.bgs[imgN % c.bgs.length] + '.jpg') + '">'; imgN++; }
+        html += '<div class="tile-top"><span class="tile-tag">' + (CAT_TAG[c.label] || c.label) + '</span><span class="tile-n">' + String(k + 1).padStart(2, '0') + '</span></div><h3 class="tile-name"></h3></div>';
+        li.innerHTML = html;
+        var nm = $('.tile-name', li);
+        if (cl.logo) { var l = document.createElement('img'); l.src = cl.logo; l.alt = cl.name; nm.appendChild(l); } else { nm.textContent = cl.name; }
+        bento.appendChild(li);
+        bindTilt(li);
+      });
+      if (moreBtn) {
+        var rest = c.names.length - FIRST;
+        moreBtn.hidden = rest <= 0;
+        moreBtn.textContent = expanded ? 'Ver menos' : 'Ver mais ' + rest + (rest === 1 ? ' projeto' : ' projetos');
+        moreBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
       }
-      card.appendChild(bg); card.appendChild(mark); li.appendChild(card); wall.appendChild(li);
-      bindTilt(li);
-    });
-    if (live) live.textContent = c.names.length + ' projetos em ' + c.label;
-  }
-  if (wall) {
-    segBtns.forEach(function (b, k) { b.addEventListener('click', function () { setCat(k); }); });
-    setCat(0);
+      if (live) live.textContent = c.names.length + ' projetos em ' + c.label;
+    };
+    segBtns.forEach(function (b, k) { b.addEventListener('click', function () {
+      segBtns.forEach(function (x, j) { x.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
+      catIdx = k; expanded = false; render();
+    }); });
+    if (moreBtn) moreBtn.addEventListener('click', function () { expanded = !expanded; render(); });
+    render();
   }
 
   /* ---------- Formulário de contacto ---------- */
