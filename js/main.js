@@ -145,9 +145,22 @@
       var w = card ? card.getBoundingClientRect().width + 18 : 340;
       track.scrollBy({ left: dir * w, behavior: REDUCE ? 'auto' : 'smooth' });
     };
-    var ctl = $$('.scar-ctl .icon-btn');
+    var ctl = $$('#servicos .scar-ctl .icon-btn');
     if (ctl[0]) ctl[0].addEventListener('click', function () { step(-1); });
     if (ctl[1]) ctl[1].addEventListener('click', function () { step(1); });
+  }
+
+  /* ---------- Carrossel de passos ("Como Trabalhamos", tablet e telemóvel) ---------- */
+  var stepsTrack = $('#steps-track');
+  if (stepsTrack) {
+    var stepBy = function (dir) {
+      var card = $('.step', stepsTrack);
+      var gap = parseFloat(getComputedStyle(stepsTrack).columnGap) || 12;
+      stepsTrack.scrollBy({ left: dir * (card ? card.getBoundingClientRect().width + gap : 300), behavior: REDUCE ? 'auto' : 'smooth' });
+    };
+    var sc = $$('.steps-ctl .icon-btn');
+    if (sc[0]) sc[0].addEventListener('click', function () { stepBy(-1); });
+    if (sc[1]) sc[1].addEventListener('click', function () { stepBy(1); });
   }
 
   /* ---------- Trabalho Selecionado (destaque) ---------- */

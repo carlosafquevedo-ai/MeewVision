@@ -31,13 +31,13 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 2. **Hero "visor de câmara":** fotografia com zoom lento (preparado para vídeo), moldura de vidro, marcas de enquadramento, REC com timecode a correr, quadrado de foco "AF" que segue o rato, título, subtítulo, botão "Ver Projetos" (leva a Outros Projetos), botão secundário "Ver todos os Vídeos" (abre o Vimeo) e um cartão de vidro com os serviços.
 3. **Os nossos serviços (`#servicos`, etiqueta "[Vídeos, Reels e Fotografias]"):** "Os nossos serviços" + carrossel de 8 cartões com setas.
 4. **Marcas que já confiaram em nós:** faixa compacta (etiqueta à esquerda + cápsulas a deslizar da direita para a esquerda, inspirada no TrustStrip do portfólio do Carlos) com os clientes do portfólio; pausa com o rato por cima; com `prefers-reduced-motion` fica parada e desliza com o dedo/scroll. Dados em `BRANDS` no topo de `js/main.js`.
-5. **Projetos em Destaque (antes "Trabalho Selecionado"):** destaque a toda a largura com 4 projetos. *Secção de teste (repete conteúdo do ponto 6).*
-6. **Com Quem Trabalhamos?:** 5 painéis que expandem (Restaurantes, Lojas, Hotéis, Empresas, Influencers).
+5. **Projetos em Destaque (antes "Trabalho Selecionado"):** destaque a toda a largura com 4 projetos.
+6. **Com Quem Trabalhamos?:** 5 painéis que expandem, genéricos por setor (sem nomes de clientes nem botões), pela ordem Empresas, Influencers, Hotéis, Lojas, Restaurantes; cada um com o setor como título, slogan, descrição e etiquetas de serviços.
 7. **Quem Somos? + Como Trabalhamos (uma só secção, `#sobre`):** 1.ª parte: colagem 3D + texto que se preenche com o scroll + números reais do portfólio (16 hotéis, 14 restaurantes, 9 marcas). 2.ª parte (`#processo`, depois de uma linha fina): etiqueta em cápsula, título e subtítulo à esquerda e o único botão "Vamos Falar?" à direita; 4 cartões 3D lado a lado (inclinam com o rato, com número grande cortado a tomate, ícone, título e texto em profundidades diferentes), ligados por uma linha horizontal que se enche a tomate; ao entrar na secção os cartões levantam-se em perspetiva, em sequência (timeline `--steps`). Até 1180 px: 2 por linha; telemóvel: carrossel que desliza para o lado.
 8. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.
-9. **Outros Projetos:** mosaico "bento" com filtro Hotéis / Restaurantes / Marcas: blocos de tamanhos diferentes (grande, alto, largo, pequeno; padrão de 8 que preenche uma grelha 4x4), todos com a fotografia do projeto e, ao centro, o logótipo num círculo creme com o nome por baixo (sem logótipo mostram-se as iniciais); etiqueta e número em cima; inclinação 3D com o rato, entrada em cascata ao mudar de filtro; mostra 8 e o botão "Ver mais" revela o resto (a última linha estica para não deixar buracos). Dados em `CLIENTS` (`js/main.js`).
-10. **Contacto:** fundo escuro; à esquerda título "Alavanque a sua marca.", "Fale Connosco." e lista de contactos diretos (email, telefone, Instagram, Vimeo) que fica fixa ao fazer scroll; à direita formulário num cartão, com "O que procura?" em caixas de seleção (7 serviços reais + "Outro", `name="servicos"`, colunas ajustam-se à largura), campos com validação e botão principal tomate (`.btn-cta`).
-11. **Rodapé** compacto: logótipo + links numa linha; © e contactos (email, telefone) na linha de baixo.
+9. **Todos os Projetos (`#outros`, antes "Outros Projetos"):** mosaico "bento" com filtro Hotéis / Restaurantes / Marcas: blocos de tamanhos diferentes (grande, alto, largo, pequeno; padrão de 8 que preenche uma grelha 4x4), todos com a fotografia do projeto e, ao centro, o logótipo num círculo creme com o nome por baixo (sem logótipo mostram-se as iniciais); etiqueta e número em cima; inclinação 3D com o rato, entrada em cascata ao mudar de filtro; mostra 8 e o botão "Ver mais" revela o resto (a última linha estica para não deixar buracos). Dados em `CLIENTS` (`js/main.js`).
+10. **Contacto:** fundo escuro; em cima o título "Alavanque a sua marca." (esquerda) e "Fale Connosco. Conte-nos o que precisa e marcamos uma reunião." (direita); por baixo o formulário a toda a largura num cartão: Nome | Email | Empresa lado a lado, Mensagem, depois "O que procura?" em caixas de seleção (7 serviços reais + "Outro", `name="servicos"`) e o botão principal tomate (`.btn-cta`).
+11. **Rodapé** compacto: logótipo + links do menu; linha de contactos diretos (Email, Telefone, Instagram, Vimeo, com etiqueta e seta; 4 colunas no computador, 2 no tablet, 1 no telemóvel); © MeewVision Creative Studio, Portugal.
 
 As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais ficam.
 
@@ -48,7 +48,7 @@ As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais
 - Textos que **não** vêm do site deles e têm de ser confirmados com o cliente:
   - "Como Trabalhamos" (os 4 passos; só a frase do passo 02 vem do site deles).
   - Subtítulos de apoio escritos por nós (ex.: "Cada formato pensado para o canal onde vai viver…", "Veja o nosso trabalho em movimento.").
-  - A imagem usada para ASNOVE/Influencers (`influencer.jpg`) é a capa da categoria Influencers do portfólio deles, não necessariamente do projeto ASNOVE.
+  - "Com Quem Trabalhamos?": o subtítulo, os slogans e as descrições de cada setor (Empresas, Influencers, Hotéis, Lojas, Restaurantes) foram escritos por nós; as etiquetas usam os nomes dos serviços do cliente. As imagens são do portfólio (ex.: `influencer.jpg` é a capa da categoria Influencers).
 
 ## Contactos reais do cliente
 
@@ -62,7 +62,6 @@ As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais
 
 - [ ] **Vídeo do hero:** colocar `assets/video/hero.mp4` (15 a 30 s, 1080p, sem som, menos de 10 MB) e trocar o `<img>` do `.hero-media` pelo `<video>` indicado no comentário do `index.html`. O showreel de 50 s do site atual deles é uma boa fonte.
 - [ ] **Formulário:** ainda não envia nada (há um `TODO` em `js/main.js`). Ligar a Formspree, Netlify Forms ou outro serviço.
-- [ ] **Escolher secções:** decidir entre "Com Quem Trabalhamos?" e "Trabalho Selecionado".
 - [ ] **Versão EN:** o público de hotelaria é internacional; considerar PT/EN.
 - [ ] **Logótipos dos clientes:** pedir ao cliente os logótipos (SVG ou PNG transparente) e colocá-los em `assets/img/logos/`. Na faixa "Marcas que já confiaram em nós", basta preencher `logo` em `BRANDS` (`js/main.js`); até lá aparecem os nomes. Também se podem usar na grelha "Outros Projetos". Em "Outros Projetos", cada cliente em `CLIENTS` aceita `{ name, logo, img }`: `logo` vai para o círculo por cima do nome (substitui as iniciais; de preferência logótipo a cores ou escuro, porque o círculo é creme) e `img` é a fotografia do projeto no bloco. **As fotografias atuais são provisórias** (imagens do portfólio usadas por categoria, não do projeto de cada cliente).
 - [ ] **SEO e partilha:** imagens Open Graph, `sitemap.xml`, dados estruturados (LocalBusiness).
