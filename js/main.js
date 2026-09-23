@@ -10,6 +10,19 @@
   var CAN_TILT = mq('(hover: hover) and (pointer: fine)') && !REDUCE;
 
   /* ---------- Dados ---------- */
+  var PROJECTS = [
+    { cat: 'Restaurantes', title: 'Lota da Esquina', tagline: 'Vibrante. Sofisticado. Elegante.', url: 'https://www.meewvision.com/lota-da-esquina' },
+    { cat: 'Lojas', title: 'Flor da Selva', tagline: 'Artesanal. Familiar. Autêntico. Exclusivo.', url: 'https://www.meewvision.com/flor-da-selva' },
+    { cat: 'Hotéis', title: 'Pestana Group', tagline: 'Exclusivo. Distinto. Elegante.', url: 'https://www.meewvision.com/pestanagroup' },
+    { cat: 'Empresas', title: 'BPI Gestão de Ativos', tagline: 'Profissional. Jovem. Dinâmica. Inspiradora.', url: 'https://www.meewvision.com/bpi-gestao-de-ativos' },
+    { cat: 'Influencers', title: 'ASNOVE', tagline: 'Criativa. Inspiradora. Simplista.', url: 'https://www.meewvision.com/portfolio1' }
+  ];
+  var FEATURED = [
+    { p: 2, type: 'Reels, vídeo e fotografia' },
+    { p: 0, type: 'Reels, vídeo de evento e fotografia' },
+    { p: 1, type: 'Vídeo, reels e fotografia' },
+    { p: 3, type: 'Vídeo corporativo e entrevistas' }
+  ];
   // Marcas da faixa "Marcas que já confiaram em nós" (clientes reais do portfólio).
   // Para mostrar o logótipo: colocar o ficheiro em assets/img/logos/ e preencher logo, ex. { name: 'Sandeman', logo: 'assets/img/logos/sandeman.svg' }
   var BRANDS = [
@@ -19,6 +32,11 @@
     'AQA Farina', 'Moss', 'Ayla', 'Avec Bakery', 'Ukino', 'EsteOeste', 'Bratus', 'La Firma', 'MJT Construction',
     'Restaurante OZ', 'Arriba Pub', 'Buffalo', 'SOI', 'Bar13 Aqaba', 'Buda Burguers', 'Yolo Jordan', 'ASNOVE'
   ].map(function (b) { return typeof b === 'string' ? { name: b, logo: null } : b; });
+  var CLIENTS = [
+    { label: 'Hotéis', names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
+    { label: 'Restaurantes', names: ['Palácio do Grilo', 'Arriba Pub', 'Lota da Esquina', 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
+    { label: 'Marcas', names: ['Volkswagen Portugal', 'Neida Ceramics', 'Flor da Selva', 'Embaixada da Austrália', 'Moss', 'Sandeman', 'MJT Construction', 'Yolo Jordan', 'The Lisbon Frame'] }
+  ];
 
   /* ---------- Utilitário: escreve variáveis CSS uma vez por frame ---------- */
   function rafVars(el) {
@@ -111,6 +129,29 @@
     if (ctl[1]) ctl[1].addEventListener('click', function () { step(1); });
   }
 
+  /* ---------- Trabalho Selecionado (destaque) ---------- */
+  var feat = $('.feat');
+  if (feat) {
+    var imgs = $$('.feat-bg img', feat), dots = $$('.dots button', feat), fi = 0;
+    var h3 = $('.feat-title h3', feat), tl = $('.feat-title p', feat), dds = $$('.feat-meta dd', feat);
+    var go = $('.feat-go', feat), count = $('.feat-ctl .count', feat), box = $('.feat-title', feat);
+    var setFeat = function (i) {
+      var n = FEATURED.length; fi = ((i % n) + n) % n;
+      var f = FEATURED[fi], pr = PROJECTS[f.p];
+      imgs.forEach(function (im, k) { im.classList.toggle('on', k === fi); });
+      dots.forEach(function (d, k) { d.setAttribute('aria-current', k === fi ? 'true' : 'false'); });
+      h3.textContent = pr.title; tl.textContent = pr.tagline;
+      dds[0].textContent = pr.title; dds[1].textContent = pr.cat; dds[2].textContent = f.type;
+      go.href = pr.url; go.setAttribute('aria-label', 'Ver projeto completo: ' + pr.title);
+      count.textContent = '0' + (fi + 1) + ' / 0' + n;
+      box.style.animation = 'none'; void box.offsetWidth; box.style.animation = '';
+    };
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { setFeat(k); }); });
+    var fb = $$('.feat-ctl > .icon-btn', feat);
+    if (fb[0]) fb[0].addEventListener('click', function () { setFeat(fi - 1); });
+    if (fb[1]) fb[1].addEventListener('click', function () { setFeat(fi + 1); });
+  }
+
   /* ---------- Marcas que já confiaram em nós (faixa contínua) ---------- */
   var logos = $('#logos-track');
   if (logos) {
@@ -136,6 +177,21 @@
     setDur();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDur);
   }
+
+  /* ---------- Outros Projetos: filtro por categoria ---------- */
+  var wall = $('.wall'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
+  function setCat(i) {
+    var c = CLIENTS[i];
+    segBtns.forEach(function (b, k) { b.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
+    wall.innerHTML = '';
+    c.names.forEach(function (nm, k) {
+      var li = document.createElement('li'), sp = document.createElement('span');
+      li.style.animationDelay = (k * 0.03).toFixed(2) + 's'; sp.textContent = nm;
+      li.appendChild(sp); wall.appendChild(li);
+    });
+    if (live) live.textContent = c.names.length + ' projetos em ' + c.label;
+  }
+  if (wall) segBtns.forEach(function (b, k) { b.addEventListener('click', function () { setCat(k); }); });
 
   /* ---------- Formulário de contacto ---------- */
   var form = $('.contact form');
