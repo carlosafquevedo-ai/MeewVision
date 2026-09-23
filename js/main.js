@@ -47,7 +47,7 @@
     };
   }
 
-  /* ---------- Inclinação 3D genérica (colagem, cartões, logótipo) ---------- */
+  /* ---------- Inclinação 3D genérica (colagem, cartões) ---------- */
   function bindTilt(el) {
     if (!CAN_TILT) return;
     var rect = null, set = rafVars(el);
@@ -58,7 +58,7 @@
     });
     el.addEventListener('pointerleave', function () { rect = null; set({ '--tx': '0', '--ty': '0' }); });
   }
-  $$('.collage, .step, .scard, .footer-logo').forEach(bindTilt);
+  $$('.collage, .step, .scard').forEach(bindTilt);
 
   /* ---------- Navegação: fundo sólido depois do hero + menu móvel ---------- */
   var nav = $('.nav');
@@ -194,12 +194,6 @@
   if (wall) segBtns.forEach(function (b, k) { b.addEventListener('click', function () { setCat(k); }); });
 
   /* ---------- Formulário de contacto ---------- */
-  $$('.chips .chip').forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      var on = !chip.classList.contains('on');
-      chip.classList.toggle('on', on); chip.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
-  });
   var form = $('.contact form');
   if (form) {
     var showErr = function (name, msg) {

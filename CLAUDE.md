@@ -18,7 +18,7 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 - **Cores:**
   - Tinta (fundo escuro): `#1B1417`; superfície escura: `#241B1F` / `#2A2024`
   - Creme (logótipo, fundos claros): `#F1EBDF`; creme 2: `#E6DECF`
-  - Tomate (CTA principal, faixa, contacto): `#E4502E`
+  - Tomate (CTA principal, botão de envio do contacto): `#E4502E`
   - Mostarda (detalhes, foco, etiquetas mono): `#F2C14E`
   - Texto secundário sobre escuro: `#CFC4BB` / `#B8ACA4`; sobre claro: `#5E524D`
 - **Tipografia (Google Fonts):** Bricolage Grotesque (títulos e texto) + IBM Plex Mono (etiquetas pequenas).
@@ -29,16 +29,16 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 
 1. **Menu** em cápsula flutuante (fica sólido depois do hero) + menu móvel em ecrã inteiro.
 2. **Hero "visor de câmara":** fotografia com zoom lento (preparado para vídeo), moldura de vidro, marcas de enquadramento, REC com timecode a correr, quadrado de foco "AF" que segue o rato, título, subtítulo, 3 CTAs e um cartão de vidro com os serviços.
-3. **O que entregamos (serviços, `#servicos`):** "Vídeos, reels e fotografias." + carrossel de 8 cartões com setas.
+3. **Os nossos serviços (`#servicos`, etiqueta "[Vídeos, Reels e Fotografias]"):** "Os nossos serviços" + carrossel de 8 cartões com setas.
 4. **Marcas que já confiaram em nós:** faixa compacta (etiqueta à esquerda + cápsulas a deslizar da direita para a esquerda, inspirada no TrustStrip do portfólio do Carlos) com os clientes do portfólio; pausa com o rato por cima; com `prefers-reduced-motion` fica parada e desliza com o dedo/scroll. Dados em `BRANDS` no topo de `js/main.js`.
 5. **Quem Somos?:** colagem 3D + texto que se preenche com o scroll + números reais do portfólio (16 hotéis, 14 restaurantes, 9 marcas).
 6. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.
 7. **Com Quem Trabalhamos?:** 5 painéis que expandem (Restaurantes, Lojas, Hotéis, Empresas, Influencers).
-8. **Como Trabalhamos:** 4 cartões em escada (01 a 04).
+8. **Como Trabalhamos:** 4 cartões em escada (01 mais baixo, 04 mais alto; degraus de 32 px).
 9. **Trabalho Selecionado:** destaque a toda a largura com 4 projetos. *Secção de teste (repete conteúdo do ponto 7).*
 10. **Outros Projetos:** grelha de nomes de clientes com filtro (Hotéis / Restaurantes / Marcas).
-11. **Contacto:** "Alavanque a sua marca." / "Fale Connosco." + formulário com validação.
-12. **Rodapé** com o logótipo em 3D.
+11. **Contacto:** fundo escuro; à esquerda título "Alavanque a sua marca.", "Fale Connosco." e lista de contactos diretos (email, telefone, Instagram, Vimeo) que fica fixa ao fazer scroll; à direita formulário num cartão, com "O que procura?" em caixas de seleção (7 serviços reais + "Outro", `name="servicos"`, colunas ajustam-se à largura), campos com validação e botão tomate.
+12. **Rodapé** compacto: logótipo + links numa linha; © e contactos (email, telefone) na linha de baixo.
 
 As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais ficam.
 
@@ -72,7 +72,7 @@ As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais
 ## Notas técnicas
 
 - **Preparar para WordPress:** cada secção deve ficar autónoma (um `<section>` com o seu bloco de CSS e de JS, sem depender da ordem das outras) e o conteúdo repetido deve vir de dados (como `BRANDS`), para cada secção se converter diretamente num bloco ACF.
-- **Grelha:** todo o conteúdo alinha pelas mesmas duas linhas verticais. Tokens em `:root` no `css/styles.css`: `--content: 1312px` (largura máxima) e `--gutter` (64 px; 40 px até 1180 px; 20 px até 860 px). Dentro de `.wrap` isto é automático; em elementos a toda a largura (hero, carrossel, moldura do showreel) usar `max(var(--gutter), calc((100% - var(--content)) / 2))`. Não usar paddings laterais fixos em secções novas.
+- **Grelha:** todo o conteúdo alinha pelas mesmas duas linhas verticais. Tokens em `:root` no `css/styles.css`: `--content: 1312px` (largura máxima) e `--gutter` (64 px; 40 px até 1180 px; 20 px até 860 px). Dentro de `.wrap` isto é automático; em elementos a toda a largura (hero, carrossel, moldura do showreel) usar `max(var(--gutter), calc((100% - var(--content)) / 2))`. Não usar paddings laterais fixos em secções novas. O espaço vertical das secções também vem de um token, `--sec-y` (112 px; 88 px até 1180 px; 72 px até 860 px): usar `padding: var(--sec-y) 0` e não valores fixos.
 - `js/main.js` está dividido por secções com comentários; cada efeito 3D escreve variáveis CSS (`--tx`, `--ty`, `--mx`, `--my`, `--drag`) uma vez por frame, sem re-render.
 - A lista de clientes de "Outros Projetos" e os projetos em destaque estão como dados no topo de `js/main.js`.
 - As animações de scroll usam `animation-timeline` (CSS) com `@supports`, por isso em browsers sem suporte simplesmente não aparecem.
