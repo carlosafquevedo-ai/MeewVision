@@ -34,7 +34,7 @@
   ].map(function (b) { return typeof b === 'string' ? { name: b, logo: null } : b; });
   // Mosaico de "Outros Projetos". Cada cliente pode ser só o nome ('Ayla') ou um objeto:
   //   { name: 'Ayla', logo: 'assets/img/logos/ayla.svg', img: 'assets/img/…' }
-  // logo: aparece em vez do nome (a branco sobre fotografia e tinta). img: fotografia do bloco (nos blocos com imagem);
+  // logo: aparece no círculo por cima do nome (enquanto não houver, mostram-se as iniciais). img: fotografia do projeto no bloco;
   // sem img, usa-se uma das imagens da categoria (bgs), à vez.
   var CLIENTS = [
     { label: 'Hotéis', bgs: ['pestana-salao', 'pestana-escadaria', 'pestana-rececao', 'pestana-piscina'], names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
@@ -202,9 +202,10 @@
   /* ---------- Outros Projetos: mosaico "bento" com filtro e "ver mais" ---------- */
   var bento = $('.bento'), moreBtn = $('.bento-more .btn'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
   var CAT_TAG = { 'Hotéis': 'hotel', 'Restaurantes': 'restaurante', 'Marcas': 'marca' };
-  // tamanho e cor de cada bloco, por ordem; o padrão de 8 preenche uma grelha 4x4 sem buracos
-  var BENTO = [['xl', 'img'], ['s', 'tomato'], ['tall', 'img'], ['s', 'ink'], ['wide', 'img'], ['tall', 'sand'], ['tall', 'img'], ['wide', 'ink']];
+  // tamanho de cada bloco, por ordem; o padrão de 8 preenche uma grelha 4x4 sem buracos
+  var BENTO = ['xl', 's', 'tall', 's', 'wide', 'tall', 'tall', 'wide'];
   var FIRST = 8;
+  var initials = function (n) { return n.replace(/[^A-Za-zÀ-ÿ0-9 ]/g, '').split(' ').filter(function (w) { return w && !/^(de|da|do|dos|das|e)$/i.test(w); }).slice(0, 2).map(function (w) { return w[0].toUpperCase(); }).join(''); };
   if (bento) {
     var catIdx = 0, expanded = false;
     var render = function () {
@@ -213,21 +214,22 @@
       names.forEach(function (item, k) {
         var cl = typeof item === 'string' ? { name: item } : item;
         // grupos completos de 8 seguem o padrão; os restantes ficam em linhas de 4 e a última linha estica para não deixar buracos
-        var full = Math.floor(k / 8) < Math.floor(names.length / 8), pat = BENTO[k % 8], size = pat[0], kind = pat[1];
+        var full = Math.floor(k / 8) < Math.floor(names.length / 8), size = BENTO[k % 8];
         if (!full) {
           var j = k - Math.floor(names.length / 8) * 8, rest = names.length % 8, m = rest % 4, inLast = j >= rest - m;
-          size = 's'; kind = (['img', 'sand', 'ink', 'tomato'])[j % 4];
+          size = 's';
           if (m && inLast) size = m === 1 ? 'row' : m === 2 ? 'wide' : (j === rest - 1 ? 'wide' : 's');
         }
         var li = document.createElement('li');
-        li.className = 'tile ' + size + ' t-' + kind;
+        li.className = 'tile ' + size;
         li.style.animationDelay = ((k % FIRST) * 0.05).toFixed(2) + 's';
-        var html = '<div class="tile-in">';
-        if (kind === 'img') { html += '<img class="tile-img" alt="" loading="lazy" decoding="async" src="' + (cl.img || 'assets/img/' + c.bgs[imgN % c.bgs.length] + '.jpg') + '">'; imgN++; }
-        html += '<div class="tile-top"><span class="tile-tag">' + (CAT_TAG[c.label] || c.label) + '</span><span class="tile-n">' + String(k + 1).padStart(2, '0') + '</span></div><h3 class="tile-name"></h3></div>';
-        li.innerHTML = html;
-        var nm = $('.tile-name', li);
-        if (cl.logo) { var l = document.createElement('img'); l.src = cl.logo; l.alt = cl.name; nm.appendChild(l); } else { nm.textContent = cl.name; }
+        li.innerHTML = '<div class="tile-in"><img class="tile-img" alt="" loading="lazy" decoding="async" src="' + (cl.img || 'assets/img/' + c.bgs[k % c.bgs.length] + '.jpg') + '">' +
+          '<div class="tile-top"><span class="tile-tag">' + (CAT_TAG[c.label] || c.label) + '</span><span class="tile-n">' + String(k + 1).padStart(2, '0') + '</span></div>' +
+          '<div class="tile-center"><span class="tile-logo"></span><h3 class="tile-name"></h3></div></div>';
+        $('.tile-name', li).textContent = cl.name;
+        var logo = $('.tile-logo', li);
+        if (cl.logo) { var l = document.createElement('img'); l.src = cl.logo; l.alt = ''; logo.appendChild(l); }
+        else { logo.textContent = initials(cl.name); logo.classList.add('is-empty'); } // sem logótipo: iniciais como marcador
         bento.appendChild(li);
         bindTilt(li);
       });

@@ -169,7 +169,7 @@ img{display:block}
 .sectors-sec{padding:var(--sec-y) 0}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:40px}
 .sec-head p.sub{margin:18px 0 0;max-width:52ch;font-size:17px;line-height:1.55;color:#5E524D}
-.sectors{display:flex;gap:12px;height:660px;list-style:none;margin:0;padding:0}
+.sectors{display:flex;gap:12px;height:540px;list-style:none;margin:0;padding:0}
 .sec{position:relative;flex:1 1 0;min-width:0;border-radius:22px;overflow:hidden;background:#1B1417;color:#F1EBDF;transition:flex-grow .8s cubic-bezier(.2,.7,.2,1)}
 .sec.on{flex-grow:5.2}
 .sec img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(.85);transition:filter .8s,transform 1.2s cubic-bezier(.2,.7,.2,1)}
@@ -179,7 +179,7 @@ img{display:block}
 .sec.on .sec-hit{opacity:0;pointer-events:none}
 .vlabel{writing-mode:vertical-rl;transform:rotate(180deg);font-size:24px;font-weight:650;letter-spacing:-.01em}
 .sec-hit .mono{font-size:12px;color:#F2C14E}
-.sec-body{position:absolute;left:0;bottom:0;z-index:4;width:600px;max-width:100%;padding:40px;opacity:0;transform:translateY(24px);transition:opacity .35s,transform .6s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.sec-body{position:absolute;left:0;bottom:0;z-index:4;width:580px;max-width:100%;padding:36px;opacity:0;transform:translateY(24px);transition:opacity .35s,transform .6s cubic-bezier(.2,.7,.2,1);pointer-events:none}
 .sec.on .sec-body{opacity:1;transform:none;pointer-events:auto;transition-delay:.3s}
 .sec-body .mono{margin:0;font-size:13px;color:#F2C14E}
 .sec-body h3{margin:12px 0 10px;font-size:42px;line-height:.95;font-weight:700;letter-spacing:-.035em}
@@ -249,28 +249,29 @@ img{display:block}
 .tile.row{grid-column:1 / -1}
 .tile-in{position:relative;height:100%;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:20px 22px;transform-style:preserve-3d;transform:rotateY(calc(var(--tx,0) * 9deg)) rotateX(calc(var(--ty,0) * -9deg));transition:transform .6s cubic-bezier(.2,.7,.2,1),box-shadow .4s;box-shadow:0 20px 40px -32px rgba(27,20,23,.55)}
 .tile:hover .tile-in{box-shadow:0 34px 60px -30px rgba(27,20,23,.6)}
-.tile-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.tile-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.85);transition:transform 1s cubic-bezier(.2,.7,.2,1),filter .5s}
+.tile:hover .tile-img{filter:saturate(1)}
 .tile:hover .tile-img{transform:scale(1.07)}
-.t-img .tile-in::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(27,20,23,.45) 0%,rgba(27,20,23,0) 35%,rgba(27,20,23,0) 50%,rgba(27,20,23,.72) 100%)}
-.tile-top,.tile-name{position:relative;z-index:2}
+.tile-top,.tile-center{position:relative;z-index:2}
 .tile-top{display:flex;justify-content:space-between;align-items:center;gap:12px;transform:translateZ(30px)}
-.tile-tag{font:400 12px/1 "IBM Plex Mono",monospace;padding:6px 10px;border-radius:999px}
-.tile-n{font:500 12px/1 "IBM Plex Mono",monospace;opacity:.7;font-variant-numeric:tabular-nums}
-.tile-name{margin:0;font-size:22px;font-weight:650;letter-spacing:-.025em;line-height:1.08;transform:translateZ(45px)}
-.tile.xl .tile-name{font-size:clamp(30px,3vw,44px)}
-.tile.wide .tile-name,.tile.tall .tile-name{font-size:28px}
-.tile-name img{display:block;max-height:44px;max-width:70%;width:auto;object-fit:contain}
-/* variações de cor */
-.t-img .tile-in{background:#1B1417;color:#F1EBDF}
-.t-img .tile-tag{background:rgba(27,20,23,.5);color:#F1EBDF;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.t-img .tile-name img{filter:brightness(0) invert(1)}
-.t-tomato .tile-in{background:#E4502E;color:#1B1417}
-.t-tomato .tile-tag{background:rgba(27,20,23,.12)}
-.t-ink .tile-in{background:#1B1417;color:#F1EBDF}
-.t-ink .tile-tag{background:rgba(241,235,223,.1);color:#F59A7F}
-.t-ink .tile-name img{filter:brightness(0) invert(1)}
-.t-sand .tile-in{background:#E6DECF;color:#1B1417;box-shadow:inset 0 0 0 1px #D8CEBE}
-.t-sand .tile-tag{background:#F1EBDF;color:#7A4A3A}
+.tile-tag{font:400 12px/1 "IBM Plex Mono",monospace;padding:6px 10px;border-radius:999px;background:rgba(27,20,23,.5);color:#F1EBDF;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.tile-n{font:500 12px/1 "IBM Plex Mono",monospace;opacity:.75;font-variant-numeric:tabular-nums}
+/* logótipo num círculo + nome, centrados no bloco (o padding de baixo compensa a linha de cima para ficar ao centro ótico) */
+.tile-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-bottom:26px;text-align:center;transform:translateZ(45px)}
+.tile-logo{display:grid;place-items:center;flex:none;width:64px;height:64px;border-radius:999px;overflow:hidden;background:#F1EBDF;color:#1B1417;box-shadow:0 10px 24px -10px rgba(20,15,17,.6),0 0 0 4px rgba(241,235,223,.18);font-size:18px;font-weight:650;letter-spacing:-.02em;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.tile-logo img{width:70%;height:70%;object-fit:contain}
+.tile:hover .tile-logo{transform:scale(1.06)}
+.tile.xl .tile-logo{width:92px;height:92px;font-size:26px}
+.tile.s .tile-center,.tile.row .tile-center{gap:10px;padding-bottom:8px}
+.tile.s .tile-logo,.tile.row .tile-logo{width:50px;height:50px;font-size:15px}
+.tile.s .tile-name,.tile.row .tile-name{font-size:19px}
+.tile-name{margin:0;max-width:18ch;font-size:22px;font-weight:650;letter-spacing:-.025em;line-height:1.1;text-wrap:balance}
+.tile.xl .tile-name{font-size:clamp(30px,3vw,42px)}
+.tile.wide .tile-name,.tile.tall .tile-name{font-size:26px}
+.tile-in{background:#1B1417;color:#F1EBDF}
+/* véu escuro sobre a fotografia para o logótipo e o nome se lerem bem; ao passar o rato aclara um pouco e revela a imagem */
+.tile-in::before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 80% 70% at 50% 55%,rgba(27,20,23,.68),rgba(27,20,23,.5) 70%),linear-gradient(180deg,rgba(27,20,23,.4),rgba(27,20,23,0) 30%);transition:opacity .5s}
+.tile:hover .tile-in::before{opacity:.78}
 .bento-more{display:flex;justify-content:center;margin-top:32px}
 .bento-more .btn[hidden]{display:none}
 .btn-line-ink{background:transparent;color:#1B1417;border-color:rgba(27,20,23,.3)}
@@ -372,12 +373,12 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .scar-ctl{display:flex;align-items:center;gap:10px}
 .track-x{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:max(var(--gutter),calc((100% - var(--content)) / 2));padding:0 max(var(--gutter),calc((100% - var(--content)) / 2)) 12px;list-style:none;margin:0;scrollbar-width:none;overscroll-behavior-x:contain}
 .track-x::-webkit-scrollbar{display:none}
-.scard{flex:0 0 320px;scroll-snap-align:start;perspective:1000px}
-.scard-img{position:relative;aspect-ratio:4 / 5;border-radius:16px;overflow:hidden;transform-style:preserve-3d;transform:rotateY(calc(var(--tx,0) * 12deg)) rotateX(calc(var(--ty,0) * -10deg));transition:transform .7s cubic-bezier(.2,.7,.2,1);box-shadow:0 30px 50px -36px rgba(27,20,23,.45)}
+.scard{flex:0 0 272px;scroll-snap-align:start;perspective:1000px}
+.scard-img{position:relative;aspect-ratio:4 / 4.6;border-radius:16px;overflow:hidden;transform-style:preserve-3d;transform:rotateY(calc(var(--tx,0) * 12deg)) rotateX(calc(var(--ty,0) * -10deg));transition:transform .7s cubic-bezier(.2,.7,.2,1);box-shadow:0 30px 50px -36px rgba(27,20,23,.45)}
 .scard-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 .scard:hover .scard-img img{transform:scale(1.06)}
 .scard-img .mono{position:absolute;top:12px;left:12px;font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(27,20,23,.6);color:#F2C14E;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.scard h3{margin:18px 0 8px;font-size:20px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.scard h3{margin:16px 0 6px;font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
 .scard p{margin:0;font-size:15px;line-height:1.55;color:#5E524D}
 
 /* NOVO D: trabalho selecionado (destaque full-bleed) */
@@ -413,7 +414,10 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 }
 @media (max-width:860px){
 .logos-in{flex-direction:column;align-items:stretch;gap:12px}
-.scard{flex-basis:78vw}
+.scard{flex-basis:60vw}
+.scard-img{aspect-ratio:1 / 1;border-radius:14px}
+.scard h3{margin-top:12px;font-size:17px}
+.scard p{font-size:14px}
 .feat{height:720px}
 .feat-in{padding-top:96px;padding-bottom:32px}
 .feat-top h2{font-size:42px}
@@ -488,18 +492,27 @@ html{scroll-behavior:auto}
 .frame-center p{font-size:16px}
 .frame-row .mono.opt{display:none}
 .sectors{flex-direction:column;height:auto;gap:10px}
-.sec{flex:none;height:84px;transition:height .7s cubic-bezier(.2,.7,.2,1)}
-.sec.on{height:600px}
+.sec{flex:none;height:64px;border-radius:16px;transition:height .7s cubic-bezier(.2,.7,.2,1)}
+.sec.on{height:460px}
 .sec-hit{flex-direction:row;padding:0 22px;justify-content:space-between}
-.vlabel{writing-mode:horizontal-tb;transform:none;font-size:22px}
-.sec-body{padding:24px}
-.sec-body h3{font-size:30px}
+.vlabel{writing-mode:horizontal-tb;transform:none;font-size:19px}
+.sec-body{padding:20px}
+.sec-body h3{font-size:26px;margin:8px 0 6px}
+.sec-body .tl{font-size:17px}
+.sec-body .ds{margin-top:10px;font-size:14px;line-height:1.5}
+.tags{margin-top:12px;gap:5px}
+.tags li{min-height:26px;padding:0 10px;font-size:12px}
+.sec-body .btn{margin-top:16px;min-height:44px;padding:0 20px;font-size:15px}
 .seg{width:100%;overflow-x:auto}
 .seg button{padding:0 14px;flex:none}
 .bento{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:150px;gap:10px;margin-top:28px}
 .tile-in{border-radius:16px;padding:14px 14px}
-.tile-name,.tile.wide .tile-name,.tile.tall .tile-name{font-size:18px}
+.tile-name,.tile.wide .tile-name,.tile.tall .tile-name,.tile.s .tile-name{font-size:16px}
 .tile.xl .tile-name{font-size:26px}
+.tile-center,.tile.s .tile-center{gap:8px;padding-bottom:4px}
+.tile-logo,.tile.s .tile-logo{width:40px;height:40px;font-size:13px}
+.tile.xl .tile-logo{width:64px;height:64px;font-size:18px}
+.tile-tag{padding:5px 8px;font-size:11px}
 .contact-left,.form-area{grid-column:1 / -1}
 .contact-left{position:static}
 .form-area{margin-top:48px;padding:20px;border-radius:22px}
