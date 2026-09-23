@@ -62,13 +62,30 @@
     });
     el.addEventListener('pointerleave', function () { rect = null; set({ '--tx': '0', '--ty': '0' }); });
   }
-  $$('.collage, .step, .scard').forEach(bindTilt);
+  $$('.collage, .scard, .step').forEach(bindTilt);
 
   /* ---------- Navegação: fundo sólido depois do hero + menu móvel ---------- */
   var nav = $('.nav');
   var heroBody = $('.hero-body');
   if (nav && heroBody && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (en) { nav.classList.toggle('solid', !en[0].isIntersecting); }, { rootMargin: '-90px 0px 0px 0px' }).observe(heroBody);
+  }
+
+  // Link da secção atual aceso no menu
+  var navLinks = $$('.nav-links a[href^="#"]');
+  if (navLinks.length && 'IntersectionObserver' in window) {
+    var byId = {}, SPY_ALIAS = { outros: 'trabalho' };
+    navLinks.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var link = byId[en.target.id] || byId[SPY_ALIAS[en.target.id]];
+        if (!link && en.target.id !== 'topo') return; // secções sem link no menu mantêm o anterior
+        navLinks.forEach(function (a) { a.removeAttribute('aria-current'); });
+        if (link) link.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    $$('main > section').forEach(function (s) { spy.observe(s); });
   }
   var menu = $('#menu'), menuBtn = $('#menu-btn'), menuClose = $('#menu-close');
   function openMenu() { menu.hidden = false; menuBtn.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; menuClose.focus(); }
