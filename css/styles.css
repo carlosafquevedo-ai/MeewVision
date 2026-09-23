@@ -399,7 +399,8 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .feat::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(20,15,17,.7) 0%,rgba(20,15,17,.1) 35%,rgba(20,15,17,.25) 60%,rgba(20,15,17,.92) 100%)}
 .feat-in{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding-top:110px;padding-bottom:56px}
 .feat-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-.feat-top h2{margin:0;font-size:clamp(38px,3.8vw,52px);line-height:.95;font-weight:750;letter-spacing:-.05em}
+/* mesmo tamanho e peso dos títulos de secção (.h2) */
+.feat-top h2{margin:0;font-size:clamp(32px,3.2vw,44px);line-height:1.02;font-weight:700;letter-spacing:-.035em}
 .feat-go{width:84px;height:84px;border-radius:999px;border:1.5px solid rgba(241,235,223,.55);display:inline-flex;align-items:center;justify-content:center;color:#F1EBDF;flex:none;transition:background-color .3s,color .3s,transform .4s cubic-bezier(.2,.7,.2,1)}
 .feat-go:hover{background:#F1EBDF;color:#1B1417;transform:rotate(45deg)}
 .feat-go svg{width:28px;height:28px}
@@ -429,7 +430,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .scard p{font-size:14px}
 .feat{height:720px}
 .feat-in{padding-top:96px;padding-bottom:32px}
-.feat-top h2{font-size:34px}
+.feat-top h2{font-size:28px}
 .feat-go{width:60px;height:60px}
 .feat-title h3{font-size:30px}
 .feat-meta{gap:20px;flex-wrap:wrap}
