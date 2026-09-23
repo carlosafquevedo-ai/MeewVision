@@ -18,7 +18,7 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 - **Cores:**
   - Tinta (fundo escuro): `#1B1417`; superfície escura: `#241B1F` / `#2A2024`
   - Creme (logótipo, fundos claros): `#F1EBDF`; creme 2: `#E6DECF`
-  - Tomate (botão principal `.btn-cta`: hero, "Como Trabalhamos" e formulário; hover creme): `#E4502E`
+  - Tomate (botão principal `.btn-cta`: hero e "Como Trabalhamos", hover creme; círculo do botão de envio do formulário): `#E4502E`
   - Mostarda (detalhes, foco, etiquetas mono): `#F2C14E`
   - Texto secundário sobre escuro: `#CFC4BB` / `#B8ACA4`; sobre claro: `#5E524D`
 - **Tipografia (Google Fonts):** Bricolage Grotesque (títulos e texto) + IBM Plex Mono (etiquetas pequenas).
@@ -36,7 +36,7 @@ Para ver: abrir `index.html` no browser, ou `npx serve .` e abrir o endereço in
 7. **Quem Somos? + Como Trabalhamos (uma só secção, `#sobre`):** 1.ª parte: colagem 3D + texto que se preenche com o scroll + números reais do portfólio (16 hotéis, 14 restaurantes, 9 marcas). 2.ª parte (`#processo`, depois de uma linha fina): etiqueta em cápsula, título e subtítulo à esquerda e o único botão "Vamos Falar?" à direita; 4 cartões 3D lado a lado (inclinam com o rato, com número grande cortado a tomate, ícone, título e texto em profundidades diferentes), ligados por uma linha horizontal que se enche a tomate; ao entrar na secção os cartões levantam-se em perspetiva, em sequência (timeline `--steps`). Até 1180 px: 2 por linha; telemóvel: carrossel que desliza para o lado.
 8. **Showreel:** fotografia a toda a largura com moldura e link para o Vimeo.
 9. **Todos os Projetos (`#outros`, antes "Outros Projetos"):** mosaico "bento" com filtro Hotéis / Restaurantes / Marcas: blocos de tamanhos diferentes (grande, alto, largo, pequeno; padrão de 8 que preenche uma grelha 4x4), todos com a fotografia do projeto e, ao centro, o logótipo num círculo creme com o nome por baixo (sem logótipo mostram-se as iniciais); etiqueta e número em cima; inclinação 3D com o rato, entrada em cascata ao mudar de filtro; mostra 8 e o botão "Ver mais" revela o resto (a última linha estica para não deixar buracos). Dados em `CLIENTS` (`js/main.js`).
-10. **Contacto:** fundo escuro; em cima o título "Alavanque a sua marca." (esquerda) e "Fale Connosco. Conte-nos o que precisa e marcamos uma reunião." (direita); por baixo o formulário a toda a largura num cartão: Nome | Email | Empresa lado a lado, Mensagem, depois "O que procura?" em caixas de seleção (7 serviços reais + "Outro", `name="servicos"`) e o botão principal tomate (`.btn-cta`).
+10. **Contacto:** fundo tinta (`#1B1417`, como o rodapé), com o cartão claro do formulário em contraste; à esquerda etiqueta, título grande em inglês "Let’s create something amazing together!" (pedido do Carlos) e "Conte-nos o que precisa e marcamos uma reunião."; à direita o formulário num cartão claro com brilho quente suave: "Fale Connosco." a cinzento, Nome | Email, Mensagem, "O que procura?" em caixas brancas (3 colunas; 7 serviços reais + "Outro", `name="servicos"`) e botão escuro "Vamos Falar?" com círculo tomate (`.btn-send`). No tablet e no telemóvel o título fica por cima do cartão.
 11. **Rodapé** compacto: logótipo + links do menu; linha de contactos diretos (Email, Telefone, Instagram, Vimeo, com etiqueta e seta; 4 colunas no computador, 2 no tablet, 1 no telemóvel); © MeewVision Creative Studio, Portugal.
 
 As secções marcadas como *teste* foram adicionadas para o Carlos decidir quais ficam.

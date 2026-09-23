@@ -279,7 +279,7 @@
       if (eN) { form.elements.nome.focus(); return; }
       if (eE) { form.elements.email.focus(); return; }
       var btn = $('button[type="submit"]', form);
-      btn.disabled = true; btn.textContent = 'A enviar…';
+      btn.disabled = true; btn.firstChild.textContent = 'A enviar…';
       // TODO: ligar a um serviço de envio (Formspree, Netlify Forms, API própria...).
       setTimeout(function () {
         var sent = $('.contact .sent');
