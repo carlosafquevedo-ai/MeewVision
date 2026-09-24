@@ -207,8 +207,8 @@ img{display:block}
 .process .h2{margin-top:16px}
 .process .sub{margin:16px 0 0;max-width:52ch;font-size:17px;line-height:1.55;color:#5E524D}
 /* setas do carrossel de passos: só no tablet e no telemóvel (mesmo estilo das setas dos serviços) */
-.steps-ctl{display:none;justify-content:flex-end;margin-top:28px}
-.steps{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 24px;list-style:none;margin:56px 0 0;padding:32px 0 0;view-timeline-name:--steps;perspective:1400px}
+.scar-ctl.steps-ctl{display:none;justify-content:flex-end;margin-top:28px}
+.steps{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 20px;list-style:none;margin:56px 0 0;padding:32px 0 0;view-timeline-name:--steps;perspective:1400px}
 .steps::before,.steps::after{content:"";position:absolute;left:0;right:0;top:6px;height:2px;border-radius:2px}
 .steps::before{background:#DDD4C6}
 .steps::after{background:#E4502E;transform-origin:left;transform:scaleX(1)}
@@ -226,19 +226,21 @@ img{display:block}
 .step-node,.step-n{animation-timeline:--steps;animation-fill-mode:both;animation-timing-function:linear;animation-range:entry 30% cover 55%}
 .step-node{animation-name:stepNode}
 .step-n{animation-name:stepNum}
-.step:nth-child(1) .step-node,.step:nth-child(1) .step-n{animation-range:entry 10% entry 30%}
-.step:nth-child(2) .step-node,.step:nth-child(2) .step-n{animation-range:entry 30% entry 55%}
-.step:nth-child(3) .step-node,.step:nth-child(3) .step-n{animation-range:entry 55% entry 78%}
-.step:nth-child(4) .step-node,.step:nth-child(4) .step-n{animation-range:entry 78% entry 100%}
+.step:nth-child(1) .step-node,.step:nth-child(1) .step-n{animation-range:entry 10% entry 28%}
+.step:nth-child(2) .step-node,.step:nth-child(2) .step-n{animation-range:entry 28% entry 46%}
+.step:nth-child(3) .step-node,.step:nth-child(3) .step-n{animation-range:entry 46% entry 64%}
+.step:nth-child(4) .step-node,.step:nth-child(4) .step-n{animation-range:entry 64% entry 82%}
+.step:nth-child(5) .step-node,.step:nth-child(5) .step-n{animation-range:entry 82% entry 100%}
 @keyframes stepsFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes stepNode{from{background:#F1EBDF;border-color:#CFC5B5;box-shadow:0 0 0 0 rgba(228,80,46,0)}to{background:#E4502E;border-color:#E4502E;box-shadow:0 0 0 5px rgba(228,80,46,.16)}}
 @keyframes stepNum{from{color:#D8CEBE}to{color:#E4502E}}
 /* entrada em perspetiva, em sequência (usa translate/rotate para não chocar com a inclinação do rato) */
 .step{animation:stepRise linear both;animation-timeline:--steps}
-.step:nth-child(1){animation-range:entry 0% entry 40%}
-.step:nth-child(2){animation-range:entry 20% entry 60%}
-.step:nth-child(3){animation-range:entry 40% entry 80%}
-.step:nth-child(4){animation-range:entry 60% entry 100%}
+.step:nth-child(1){animation-range:entry 0% entry 36%}
+.step:nth-child(2){animation-range:entry 16% entry 52%}
+.step:nth-child(3){animation-range:entry 32% entry 68%}
+.step:nth-child(4){animation-range:entry 48% entry 84%}
+.step:nth-child(5){animation-range:entry 64% entry 100%}
 @keyframes stepRise{from{opacity:0;translate:0 60px;rotate:x 28deg}to{opacity:1;translate:0 0;rotate:x 0deg}}
 }
 
@@ -472,7 +474,7 @@ html{scroll-behavior:auto}
 .form-area{margin-top:36px}
 .contact-grid{align-items:start}
 .footer-direct{grid-template-columns:repeat(2,minmax(0,1fr))}
-.steps-ctl{display:flex}
+.scar-ctl.steps-ctl{display:flex}
 .steps{display:flex;gap:16px;margin:16px calc(var(--gutter) * -1) 0;padding:0 var(--gutter) 4px;perspective:none;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:var(--gutter);scrollbar-width:none;overscroll-behavior-x:contain}
 .steps::-webkit-scrollbar{display:none}
 .steps::before,.steps::after{display:none}

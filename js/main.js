@@ -74,7 +74,7 @@
   // Link da secção atual aceso no menu
   var navLinks = $$('.nav-links a[href^="#"]');
   if (navLinks.length && 'IntersectionObserver' in window) {
-    var byId = {}, SPY_ALIAS = { outros: 'trabalho' };
+    var byId = {}, SPY_ALIAS = {};
     navLinks.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
