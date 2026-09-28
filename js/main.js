@@ -32,10 +32,12 @@
     'AQA Farina', 'Moss', 'Ayla', 'Avec Bakery', 'Ukino', 'EsteOeste', 'Bratus', 'La Firma', 'MJT Construction',
     'Restaurante OZ', 'Arriba Pub', 'Buffalo', 'SOI', 'Bar13 Aqaba', 'Buda Burguers', 'Yolo Jordan', 'ASNOVE'
   ].map(function (b) { return typeof b === 'string' ? { name: b, logo: null } : b; });
-  // Mosaico de "Outros Projetos". Cada cliente pode ser só o nome ('Ayla') ou um objeto:
-  //   { name: 'Ayla', logo: 'assets/img/logos/ayla.svg', img: 'assets/img/…' }
-  // logo: aparece no círculo por cima do nome (enquanto não houver, mostram-se as iniciais). img: fotografia do projeto no bloco;
-  // sem img, usa-se uma das imagens da categoria (bgs), à vez.
+  // Mosaico de "Todos os Projetos". Cada cliente pode ser só o nome ('Ayla') ou um objeto:
+  //   { name: 'Ayla', img: 'assets/img/…', vimeo: 'https://vimeo.com/…' }
+  // img: fotografia do projeto no cartão; sem img, usa-se uma das imagens da categoria (bgs), à vez.
+  // vimeo: link do vídeo do projeto; sem vimeo, o cartão abre a conta da MeewVision no Vimeo (VIMEO_ALL).
+  // Os 4 primeiros de cada lista aparecem em destaque (maiores).
+  var VIMEO_ALL = 'https://vimeo.com/meewvision';
   var CLIENTS = [
     { label: 'Hotéis', bgs: ['pestana-salao', 'pestana-escadaria', 'pestana-rececao', 'pestana-piscina'], names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
     { label: 'Restaurantes', bgs: ['lota-polvo', 'lota-prato', 'lota-sopa', 'lota-evento'], names: ['Palácio do Grilo', 'Arriba Pub', 'Lota da Esquina', 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
@@ -62,7 +64,7 @@
     });
     el.addEventListener('pointerleave', function () { rect = null; set({ '--tx': '0', '--ty': '0' }); });
   }
-  $$('.collage, .scard, .step').forEach(bindTilt);
+  $$('.collage, .step').forEach(bindTilt);
 
   /* ---------- Navegação: fundo sólido depois do hero + menu móvel ---------- */
   var nav = $('.nav');
@@ -196,7 +198,7 @@
       imgs.forEach(function (im, k) { im.classList.toggle('on', k === fi); });
       dots.forEach(function (d, k) { d.setAttribute('aria-current', k === fi ? 'true' : 'false'); });
       h3.textContent = pr.title; tl.textContent = pr.tagline;
-      dds[0].textContent = pr.title; dds[1].textContent = pr.cat; dds[2].textContent = f.type;
+      dds[0].textContent = pr.cat; dds[1].textContent = f.type;
       go.href = pr.url; go.setAttribute('aria-label', 'Ver projeto completo: ' + pr.title);
       count.textContent = '0' + (fi + 1) + ' / 0' + n;
       box.style.animation = 'none'; void box.offsetWidth; box.style.animation = '';
@@ -233,53 +235,123 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDur);
   }
 
-  /* ---------- Outros Projetos: mosaico "bento" com filtro e "ver mais" ---------- */
-  var bento = $('.bento'), moreBtn = $('.bento-more .btn'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
-  var CAT_TAG = { 'Hotéis': 'hotel', 'Restaurantes': 'restaurante', 'Marcas': 'marca' };
-  // tamanho de cada bloco, por ordem; o padrão de 8 preenche uma grelha 4x4 sem buracos
-  var BENTO = ['xl', 's', 'tall', 's', 'wide', 'tall', 'tall', 'wide'];
-  var FIRST = 8;
-  var initials = function (n) { return n.replace(/[^A-Za-zÀ-ÿ0-9 ]/g, '').split(' ').filter(function (w) { return w && !/^(de|da|do|dos|das|e)$/i.test(w); }).slice(0, 2).map(function (w) { return w[0].toUpperCase(); }).join(''); };
-  if (bento) {
-    var catIdx = 0, expanded = false;
-    var render = function () {
-      var c = CLIENTS[catIdx], names = expanded ? c.names : c.names.slice(0, FIRST), imgN = 0;
-      bento.innerHTML = '';
-      names.forEach(function (item, k) {
-        var cl = typeof item === 'string' ? { name: item } : item;
-        // grupos completos de 8 seguem o padrão; os restantes ficam em linhas de 4 e a última linha estica para não deixar buracos
-        var full = Math.floor(k / 8) < Math.floor(names.length / 8), size = BENTO[k % 8];
-        if (!full) {
-          var j = k - Math.floor(names.length / 8) * 8, rest = names.length % 8, m = rest % 4, inLast = j >= rest - m;
-          size = 's';
-          if (m && inLast) size = m === 1 ? 'row' : m === 2 ? 'wide' : (j === rest - 1 ? 'wide' : 's');
-        }
-        var li = document.createElement('li');
-        li.className = 'tile ' + size;
-        li.style.animationDelay = ((k % FIRST) * 0.05).toFixed(2) + 's';
-        li.innerHTML = '<div class="tile-in"><img class="tile-img" alt="" loading="lazy" decoding="async" src="' + (cl.img || 'assets/img/' + c.bgs[k % c.bgs.length] + '.jpg') + '">' +
-          '<div class="tile-top"><span class="tile-tag">' + (CAT_TAG[c.label] || c.label) + '</span><span class="tile-n">' + String(k + 1).padStart(2, '0') + '</span></div>' +
-          '<div class="tile-center"><span class="tile-logo"></span><h3 class="tile-name"></h3></div></div>';
-        $('.tile-name', li).textContent = cl.name;
-        var logo = $('.tile-logo', li);
-        if (cl.logo) { var l = document.createElement('img'); l.src = cl.logo; l.alt = ''; logo.appendChild(l); }
-        else { logo.textContent = initials(cl.name); logo.classList.add('is-empty'); } // sem logótipo: iniciais como marcador
-        bento.appendChild(li);
-        bindTilt(li);
-      });
-      if (moreBtn) {
-        var rest = c.names.length - FIRST;
-        moreBtn.hidden = rest <= 0;
-        moreBtn.textContent = expanded ? 'Ver menos' : 'Ver mais ' + rest + (rest === 1 ? ' projeto' : ' projetos');
-        moreBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  /* ---------- Serviços: "Ler mais" / "Ler menos" em cada cartão ---------- */
+  $$('.scard-more').forEach(function (b) {
+    var desc = document.getElementById(b.getAttribute('aria-controls')), label = $('span', b);
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      desc.classList.toggle('open', open);
+      label.textContent = open ? 'Ler menos' : 'Ler mais';
+    });
+  });
+
+  /* ---------- Todos os Projetos: mosaico de fotografias quadradas com filtro ---------- */
+  // Todos os projetos da categoria ficam visíveis. Os 4 primeiros de cada lista são os destaques (--lg células);
+  // os outros são pequenos (--sm). Colunas e tamanhos vêm do CSS: computador 16 colunas, 2x2 e 3x3, com vazios
+  // (--holes) e uma faixa a meio para o título (--th); tablet 6 e telemóvel 3 colunas, 1x1 e 2x2, sem vazios.
+  // Cada cartão ocupa o primeiro lugar livre; os destaques alternam entre a esquerda e a direita.
+  var pgrid = $('.pgrid'), bento = $('.bento'), segBtns = $$('.seg button'), live = $('.wall-sec .sr');
+  var FEATURED_N = 4;
+    if (bento && pgrid) {
+    var catIdx = 0, lastCols = 0;
+    var cssNum = function (name) { return parseInt(getComputedStyle(pgrid).getPropertyValue(name), 10); };
+    // ordem de colocação: os destaques espalhados pela lista (colagem: 0, n/4, n/2, 3n/4; grelha arrumada: 0, n/5… para
+    // que os últimos cartões sejam pequenos e tapem os vazios que ficam ao lado dos destaques)
+    var order = function (list, spread) {
+      var f = list.slice(0, FEATURED_N), rest = list.slice(FEATURED_N), out = [], n = list.length;
+      var at = f.map(function (_, i) { return Math.round(i * n / (f.length + spread)); });
+      for (var k = 0, fi = 0, ri = 0; k < n; k++) {
+        if (fi < f.length && at[fi] === k) out.push({ item: f[fi], idx: fi++, lg: true });
+        else out.push({ item: rest[ri], idx: FEATURED_N + ri++, lg: false });
       }
+      return out;
+    };
+    // vazios fixos (sempre nos mesmos sítios) para os cartões não formarem uma grelha cheia
+    var hole = function (r, c, cols) { var h = Math.sin((r + 1) * 12.9898 + (c + 1) * 78.233 + cols) * 43758.5453; return h - Math.floor(h) < (cols > 6 ? 0.055 : 0.02); };
+    // faixa do título (linhas tr a tr+th): o miolo fica vazio para as letras se lerem; só as pontas ficam por baixo das fotografias
+    var pack = function (list, cols, sm, lg, tr, th, holes, alt) {
+      var occ = [], nf = 0;
+      var c0 = Math.floor(cols * 0.3), c1 = Math.ceil(cols * 0.7);
+      for (var hr = 0; hr < 60; hr++) {
+        occ[hr] = [];
+        for (var hc = 0; hc < cols; hc++) if ((holes && hole(hr, hc, cols)) || (hr >= tr && hr < tr + th && hc >= c0 && hc < c1)) occ[hr][hc] = 1;
+      }
+      var free = function (r, c, w, h) {
+        for (var y = r; y < r + h; y++) for (var x = c; x < c + w; x++) if (occ[y] && occ[y][x]) return false;
+        return true;
+      };
+      return list.map(function (o) {
+        var h = o.lg ? lg : sm, w = o.full ? cols : o.wide ? h * 2 : h, right = alt && o.lg && (nf++ % 2 === 1);
+        for (var r = 0; ; r++) {
+          for (var i = 0; i <= cols - w; i++) {
+            var c = right ? cols - w - i : i;
+            if (free(r, c, w, h)) {
+              for (var y = r; y < r + h; y++) { occ[y] = occ[y] || []; for (var x = c; x < c + w; x++) occ[y][x] = 1; }
+              o.r = r + 1; o.c = c + 1; o.s = h; o.w = w;
+              return o;
+            }
+          }
+        }
+      });
+    };
+    var render = function () {
+      var c = CLIENTS[catIdx], cols = cssNum('--cols'), sm = cssNum('--sm'), lg = cssNum('--lg');
+      lastCols = cols;
+      bento.innerHTML = '';
+      // a faixa do título fica a meio do mosaico: calcula, mede o número de linhas e volta a calcular até estabilizar
+      var th = cssNum('--th'), holes = cssNum('--holes'), tr = 1, placed;
+      var countRows = function (p) { return p.reduce(function (m, o) { return Math.max(m, o.r - 1 + o.s); }, 0); };
+      if (holes) {
+        // colagem: a faixa do título fica a meio do mosaico; calcula, mede o número de linhas e volta a calcular até estabilizar
+        for (var it = 0; it < 4; it++) {
+          placed = pack(order(c.names, 0), cols, sm, lg, tr, th, 1, true);
+          var next = Math.max(1, Math.round((countRows(placed) - th) / 2));
+          if (next === tr) break;
+          tr = next;
+        }
+      } else {
+        // grelha arrumada: alguns cartões pequenos passam a largos (2x1) para o total de células encher a última linha;
+        // experimenta algumas ordens (destaques mais cedo ou mais tarde, a alternar lados ou não) e fica com a primeira sem buracos;
+        // se não houver cartões pequenos que cheguem para encher ao lado dos destaques, os últimos destaques passam à largura toda
+        var tries = [[1, true], [1, false], [2, true], [2, false], [0, true], [0, false]], done = false;
+        for (var full = 0; full <= FEATURED_N && !done; full++) {
+          for (var t = 0; t < tries.length && !done; t++) {
+            var list = order(c.names, tries[t][0]);
+            list.filter(function (o) { return o.lg; }).slice(FEATURED_N - full).forEach(function (o) { o.full = true; });
+            var cells = list.reduce(function (a, o) { return a + (o.full ? cols * lg : o.lg ? lg * lg : sm * sm); }, 0), extra = (cols - cells % cols) % cols;
+            list.filter(function (o) { return !o.lg; }).slice(0, extra).forEach(function (o) { o.wide = true; });
+            var p = pack(list, cols, sm, lg, 0, 0, 0, tries[t][1]);
+            if (!placed || countRows(p) < countRows(placed)) placed = p;
+            done = countRows(p) * cols === cells + extra;
+            if (done) placed = p;
+          }
+        }
+      }
+      pgrid.style.setProperty('--tr', tr);
+      placed.forEach(function (o, k) {
+        var cl = typeof o.item === 'string' ? { name: o.item } : o.item;
+        var li = document.createElement('li');
+        li.className = 'tile' + (o.lg ? ' lg' : '');
+        li.style.gridArea = o.r + ' / ' + o.c + ' / span ' + o.s + ' / span ' + o.w;
+        li.style.animationDelay = (k * 0.03).toFixed(2) + 's';
+        li.innerHTML = '<a class="tile-in" target="_blank" rel="noopener"><img class="tile-img" alt="" loading="lazy" decoding="async" src="' + (cl.img || 'assets/img/' + c.bgs[o.idx % c.bgs.length] + '.jpg') + '">' +
+          '<span class="tile-go" aria-hidden="true"><svg viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11l9-5.5z"/></svg></span>' +
+          '<h3 class="tile-name"></h3></a>';
+        $('.tile-name', li).textContent = cl.name;
+        var link = $('.tile-in', li);
+        link.href = cl.vimeo || VIMEO_ALL;
+        link.setAttribute('aria-label', 'Ver o vídeo de ' + cl.name + ' no Vimeo (abre num novo separador)');
+        bento.appendChild(li);
+      });
       if (live) live.textContent = c.names.length + ' projetos em ' + c.label;
     };
     segBtns.forEach(function (b, k) { b.addEventListener('click', function () {
       segBtns.forEach(function (x, j) { x.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
-      catIdx = k; expanded = false; render();
+      catIdx = k; render();
     }); });
-    if (moreBtn) moreBtn.addEventListener('click', function () { expanded = !expanded; render(); });
+    // ao mudar de breakpoint (16, 6 ou 3 colunas) recalcula as posições
+    window.addEventListener('resize', function () { if (cssNum('--cols') !== lastCols) render(); });
     render();
   }
 
