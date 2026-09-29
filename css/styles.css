@@ -273,10 +273,9 @@ a.tile-in{color:inherit;text-decoration:none}
 .tile.lg .tile-go svg{width:13px;height:13px}
 @keyframes tileIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 
-/* três frases em baixo: esquerda, centro e direita */
-.wall-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid rgba(241,235,223,.14)}
+/* duas frases em baixo: uma à esquerda e outra à direita */
+.wall-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid rgba(241,235,223,.14)}
 .wall-row .mono{font-size:13px;color:#E6DECF}
-.wall-row > :nth-child(2){text-align:center}
 .wall-row > :last-child{text-align:right}
 
 /* contact: fundo creme (como os serviços); título grande à esquerda e o formulário num cartão claro com brilho quente à direita.
@@ -564,7 +563,7 @@ html{scroll-behavior:auto}
 .seg{align-self:stretch;margin-top:24px}
 .pgrid .bento{margin-top:20px}
 .wall-row{grid-template-columns:minmax(0,1fr);gap:8px;margin-top:32px}
-.wall-row > :nth-child(2),.wall-row > :last-child{text-align:left}
+.wall-row > :last-child{text-align:left}
 .tile-in{padding:8px}
 .tile-go{top:6px;right:6px;width:24px;height:24px}
 .tile-go svg{width:9px;height:9px;margin-left:1px}
