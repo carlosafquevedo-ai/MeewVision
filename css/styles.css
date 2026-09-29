@@ -114,8 +114,7 @@ img{display:block}
 .hud-card li img{width:46px;height:46px;border-radius:9px;object-fit:cover}
 .hud-card li b{font-size:15px;font-weight:600}
 .hud-card li svg{opacity:.7;transition:transform .3s}
-.hud-card li a:hover svg{transform:translateX(3px);opacity:1}
-.hud-card .btn{width:100%;margin-top:10px;min-height:48px}
+.hud-card li a:hover svg{transform:translate(2px,-2px);opacity:1}
 @supports (animation-timeline: scroll()){
 .hero-body,.hud-top{animation:heroOut linear both;animation-timeline:scroll(root);animation-range:0 70vh}
 @keyframes heroOut{to{opacity:0;filter:blur(6px)}}
@@ -278,6 +277,60 @@ a.tile-in{color:inherit;text-decoration:none}
 .wall-row .mono{font-size:13px;color:#E6DECF}
 .wall-row > :last-child{text-align:right}
 
+/* Testemunhos (referência "What our users are saying"): cabeçalho ao centro e mosaico em colunas de cartões de texto e
+   de vídeo horizontal; a parte de baixo desvanece e "Ver mais testemunhos" mostra o resto. */
+.reviews{padding:calc(var(--sec-y) * .64) 0}
+.reviews + .contact{border-top:1px solid #DDD4C6}
+.rv-head{max-width:640px;margin:0 auto;text-align:center}
+.rv-head .sub{margin:16px auto 0;max-width:52ch;font-size:17px;line-height:1.55;color:#5E524D}
+.rv-wall{position:relative;margin-top:48px}
+/* o corte fica no contentor à volta: num mosaico em colunas, limitar a altura da própria lista criava colunas a mais para o lado */
+.rv-clip{max-height:540px;overflow:hidden}
+.rv-wall.is-open .rv-clip{max-height:none}
+.rv-grid{list-style:none;margin:0;padding:0;columns:3;column-gap:18px}
+.rv-card{break-inside:avoid;margin:0 0 18px;border-radius:20px}
+/* cartão de texto */
+.rv-text{padding:22px 22px 20px;background:#FBF8F2;border:1px solid #E3DACB;box-shadow:0 20px 40px -34px rgba(27,20,23,.4)}
+.rv-text figure{margin:0}
+.rv-text blockquote{margin:0;font-size:16px;line-height:1.55;color:#1B1417}
+.rv-who{display:flex;align-items:center;gap:12px;margin-top:18px}
+.rv-logo{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:10px;overflow:hidden;background:#F1EBDF;color:#1B1417;font-size:13px;font-weight:700}
+.rv-logo img{width:78%;height:78%;object-fit:contain}
+.rv-name{display:block;font-size:15px;font-weight:650;letter-spacing:-.01em;line-height:1.2}
+.rv-brand{display:block;margin-top:2px;font-size:13.5px;color:#5E524D}
+/* cartão de vídeo (horizontal): fotografia com botão de play e a pessoa por cima */
+.rv-video .rv-open{position:relative;display:block;width:100%;padding:0;border:0;cursor:pointer;text-align:left;font:inherit;aspect-ratio:16 / 10;border-radius:20px;overflow:hidden;color:#F1EBDF;text-decoration:none;background:#241B1F;box-shadow:0 24px 44px -32px rgba(27,20,23,.55)}
+.rv-video img.rv-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv-video .rv-open::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,15,17,.8),rgba(20,15,17,.1) 55%,rgba(20,15,17,0))}
+.rv-play{position:absolute;left:50%;top:50%;z-index:2;display:grid;place-items:center;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:999px;background:#E4502E;color:#F1EBDF;box-shadow:0 12px 26px -10px rgba(20,15,17,.6);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.rv-play svg{width:18px;height:18px;margin-left:3px}
+.rv-video .rv-who{position:absolute;left:16px;right:16px;bottom:14px;z-index:2;margin:0}
+.rv-video .rv-brand{color:#E6DECF}
+.rv-video .rv-open:hover img.rv-thumb{transform:scale(1.05)}
+.rv-video .rv-open:hover .rv-play,.rv-video .rv-open:focus-visible .rv-play{transform:scale(1.1)}
+.rv-video .rv-open:focus-visible{outline:2px solid #F2C14E;outline-offset:3px}
+/* janela do vídeo */
+.rv-modal{width:min(960px,calc(100% - 32px));max-height:calc(100% - 32px);padding:0;border:0;border-radius:20px;background:#1B1417;color:#F1EBDF;overflow:hidden}
+.rv-modal::backdrop{background:rgba(20,15,17,.78)}
+.rv-modal-body{aspect-ratio:16 / 9;background:#140F11;display:grid;place-items:center}
+.rv-modal-body video{width:100%;height:100%;object-fit:contain;background:#140F11}
+.rv-empty{margin:0;font:400 14px var(--mono,"IBM Plex Mono",monospace);color:#CFC4BB}
+.rv-modal-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 12px 12px 20px}
+.rv-modal-cap{font-size:15px;font-weight:600}
+.rv-modal .rv-modal-x{color:#F1EBDF;border-color:rgba(241,235,223,.3)}
+.rv-modal .rv-modal-x:hover{background:rgba(241,235,223,.1);border-color:#F1EBDF}
+/* desvanecer em baixo + botão */
+.rv-more-wrap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:center;align-items:flex-end;height:220px;padding-bottom:6px;background:linear-gradient(180deg,rgba(241,235,223,0),#F1EBDF 78%);pointer-events:none}
+.rv-wall.is-open .rv-more-wrap{position:static;height:auto;margin-top:12px;background:none}
+.rv-wall.no-more .rv-more-wrap{display:none}
+.rv-more{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border:0;border-radius:999px;background:#1B1417;color:#F1EBDF;font:600 15px/1 "Bricolage Grotesque",sans-serif;cursor:pointer;transition:background-color .3s}
+.rv-more:hover{background:#E4502E;color:#1B1417}
+.rv-more svg{width:16px;height:16px;transition:transform .3s}
+.rv-wall.is-open .rv-more svg{transform:rotate(-90deg)}
+.rv-more[hidden]{display:none}
+
+/* contact: fundo creme (como os serviços); título grande à esquerda e o formulário num cartão claro com brilho quente à direita.
+   Menos espaço em baixo, antes do rodapé. */
 /* contact: fundo creme (como os serviços); título grande à esquerda e o formulário num cartão claro com brilho quente à direita.
    Menos espaço em baixo, antes do rodapé. */
 .contact{background:#F1EBDF;color:#1B1417;padding:calc(var(--sec-y) * .64) 0 72px}
@@ -464,6 +517,8 @@ html{scroll-behavior:auto}
 
 @media (max-width:1180px){
 :root{--gutter:40px;--sec-y:88px}
+.rv-grid{columns:2}
+.rv-clip{max-height:640px}
 #servicos .scar-ctl{display:flex}
 .dcard{flex:0 0 320px}
 .contact-left,.form-area{grid-column:1 / -1}
@@ -505,7 +560,6 @@ html{scroll-behavior:auto}
 :root{--gutter:20px;--sec-y:72px}
 .to-top{left:16px;bottom:16px;width:46px;height:46px}
 .wall-sec:has(+ .contact){padding-bottom:64px}
-.contact{padding-bottom:48px}
 .scar-ctl .icon-btn{width:36px;height:36px;border-width:1.25px}
 .scar-ctl .icon-btn svg{width:14px;height:14px}
 .process{margin-top:48px;padding-top:48px}
@@ -560,6 +614,12 @@ html{scroll-behavior:auto}
 .seg button{flex:1 1 0;min-width:0;justify-content:center;min-height:44px;padding:0 6px;gap:5px;font-size:14px}
 .seg .n{font-size:10px}
 .pgrid{--cols:3;--g:8px}
+.contact{padding-bottom:48px}
+.rv-grid{columns:1}
+.rv-clip{max-height:760px}
+.rv-wall{margin-top:32px}
+.rv-text{padding:18px}
+.rv-text blockquote{font-size:15px}
 .dcard{--h:300px;flex-basis:78vw;padding:12px 12px 10px;border-radius:22px}
 .dcard h3{margin:0 8px 8px}
 .wall-title{font-size:52px}

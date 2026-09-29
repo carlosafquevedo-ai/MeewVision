@@ -92,14 +92,15 @@
 <a class="btn btn-watch" href="https://vimeo.com/meewvision" target="_blank" rel="noopener"><span class="pd" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11l9-5.5z"></path></svg></span>Ver todos os Vídeos</a>
 </div>
 </div>
-<aside class="hud-card" aria-label="Os nossos serviços">
-<div class="hud-card-top mono"><span>Os nossos serviços:</span><span>03</span></div>
+<!-- Mesmos projetos e mesma ordem de "Projetos em destaque" (FEATURED em js/main.js); na fase 2 vêm da mesma lista do Sanity -->
+<aside class="hud-card" aria-label="Projetos em destaque">
+<div class="hud-card-top mono"><span>Projetos em destaque:</span></div>
 <ul>
-<li><a href="#servicos"><img src="assets/img/flor-torra.jpg" alt="" width="46" height="46" loading="lazy"><b>Vídeos Profissionais</b><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"></path></svg></a></li>
-<li><a href="#servicos"><img src="assets/img/pestana-escadaria.jpg" alt="" width="46" height="46" loading="lazy"><b>Fotografias Profissionais</b><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"></path></svg></a></li>
-<li><a href="#servicos"><img src="assets/img/lota-evento.jpg" alt="" width="46" height="46" loading="lazy"><b>Cobertura de Eventos</b><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"></path></svg></a></li>
+<li><a href="https://www.meewvision.com/pestanagroup" target="_blank" rel="noopener" aria-label="Pestana Group: ver página do projeto (abre num novo separador)"><img src="assets/img/pestana-piscina.jpg" alt="" width="46" height="46" loading="lazy"><b>Pestana Group</b><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 14L14 6M7 6h7v7"></path></svg></a></li>
+<li><a href="https://www.meewvision.com/lota-da-esquina" target="_blank" rel="noopener" aria-label="Lota da Esquina: ver página do projeto (abre num novo separador)"><img src="assets/img/lota-prato.jpg" alt="" width="46" height="46" loading="lazy"><b>Lota da Esquina</b><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 14L14 6M7 6h7v7"></path></svg></a></li>
+<li><a href="https://www.meewvision.com/flor-da-selva" target="_blank" rel="noopener" aria-label="Flor da Selva: ver página do projeto (abre num novo separador)"><img src="assets/img/flor-graos.jpg" alt="" width="46" height="46" loading="lazy"><b>Flor da Selva</b><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 14L14 6M7 6h7v7"></path></svg></a></li>
+<li><a href="https://www.meewvision.com/bpi-gestao-de-ativos" target="_blank" rel="noopener" aria-label="BPI Gestão de Ativos: ver página do projeto (abre num novo separador)"><img src="assets/img/bpi-entrevista.jpg" alt="" width="46" height="46" loading="lazy"><b>BPI Gestão de Ativos</b><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 14L14 6M7 6h7v7"></path></svg></a></li>
 </ul>
-<a class="btn btn-cream" href="mailto:info@meewvision.com?subject=Vamos%20Falar%3F">info@meewvision.com</a>
 </aside>
 </div>
 </section>
@@ -362,6 +363,27 @@
 <span class="mono">Conheça o nosso trabalho</span>
 </div>
 </div>
+</section>
+
+<!-- Testemunhos: cartões de texto e de vídeo (horizontal, ficheiro carregado no site e não no Vimeo), gerados a partir de REVIEWS em js/main.js (na fase 2, do Sanity).
+     Os cartões atuais são EXEMPLOS entre [parênteses retos]: substituir por testemunhos reais da cliente. -->
+<section class="light reviews" id="testemunhos" aria-labelledby="reviews-title">
+<div class="wrap">
+<div class="rv-head">
+<h2 id="reviews-title" class="h2">O que dizem os nossos clientes</h2>
+<p class="sub">Marcas, hotéis e restaurantes com quem trabalhámos contam como foi.</p>
+</div>
+<div class="rv-wall" id="rv-wall">
+<div class="rv-clip"><ul class="rv-grid" id="rv-grid"></ul></div>
+<div class="rv-more-wrap"><button class="rv-more" type="button" aria-controls="rv-wall" aria-expanded="false" hidden><span>Ver mais testemunhos</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button></div>
+</div>
+</div>
+<dialog class="rv-modal" id="rv-modal" aria-label="Testemunho em vídeo">
+<div class="rv-modal-in">
+<div class="rv-modal-body"></div>
+<div class="rv-modal-foot"><span class="rv-modal-cap"></span><button class="rv-modal-x icon-btn" type="button" aria-label="Fechar vídeo"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"></path></svg></button></div>
+</div>
+</dialog>
 </section>
 
 <section class="contact" id="contacto" aria-labelledby="contacto-title">

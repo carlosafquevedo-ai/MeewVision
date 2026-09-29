@@ -44,6 +44,23 @@
     { label: 'Marcas', bgs: ['flor-torra', 'bpi-entrevista', 'flor-graos', 'bpi-gestor', 'flor-maos', 'influencer'], names: ['Volkswagen Portugal', 'Neida Ceramics', 'Flor da Selva', 'Embaixada da Austrália', 'Moss', 'Sandeman', 'MJT Construction', 'Yolo Jordan', 'The Lisbon Frame'] }
   ];
 
+  // Testemunhos. Dois tipos de cartão: { tipo: 'texto', texto, nome, marca, logo } e
+  // { tipo: 'video', video, imagem, nome, marca, logo } (vídeo horizontal carregado no site, NÃO no Vimeo:
+  // video = ficheiro MP4, ex. 'assets/video/testemunho-ana.mp4', na fase 2 vem do Sanity; imagem = capa do vídeo).
+  // logo: 'assets/img/logos/…' (opcional; sem logo aparecem as iniciais da marca).
+  // ATENÇÃO: os cartões abaixo são EXEMPLOS entre [parênteses retos]. Substituir por testemunhos reais da cliente.
+  var REVIEWS = [
+    { tipo: 'texto', texto: '[Testemunho real do cliente: duas a quatro frases sobre como foi trabalhar com a MeewVision.]', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'video', video: '', imagem: 'assets/img/bpi-entrevista.jpg', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'texto', texto: '[Testemunho real do cliente.]', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'texto', texto: '[Testemunho real do cliente: um texto mais comprido também cabe, e o cartão cresce com ele sem desalinhar os outros.]', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'texto', texto: '[Testemunho real do cliente.]', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'video', video: '', imagem: 'assets/img/pestana-rececao.jpg', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'video', video: '', imagem: 'assets/img/flor-maos.jpg', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'texto', texto: '[Testemunho real do cliente.]', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' },
+    { tipo: 'texto', texto: '[Testemunho real do cliente: duas a quatro frases.]', nome: '[Nome da pessoa]', marca: '[Cargo, Marca]' }
+  ];
+
   /* ---------- Utilitário: escreve variáveis CSS uma vez por frame ---------- */
   function rafVars(el) {
     var id = 0;
@@ -244,6 +261,75 @@
     var setDur = function () { logos.style.setProperty('--logos-dur', Math.round(logos.scrollWidth / 2 / 45) + 's'); };
     setDur();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDur);
+  }
+
+  /* ---------- Testemunhos: cartões de texto e de vídeo + "Ver mais" ---------- */
+  var rvGrid = $('#rv-grid'), rvWall = $('#rv-wall');
+  if (rvGrid && rvWall) {
+    var rvInitials = function (n) { return n.replace(/[^A-Za-zÀ-ÿ0-9 ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(function (w) { return w[0].toUpperCase(); }).join(''); };
+    var PLAY = '<svg viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M3 1.5v11l9-5.5z"/></svg>';
+    // janela com o vídeo: só carrega o ficheiro quando se abre, e pára e liberta-o ao fechar
+    var rvModal = $('#rv-modal'), rvBody = rvModal && $('.rv-modal-body', rvModal), rvLast = null;
+    var openReview = function (r) {
+      if (!rvModal || !rvModal.showModal) return;
+      rvLast = document.activeElement;
+      rvBody.innerHTML = '';
+      if (r.video) {
+        var v = document.createElement('video');
+        v.src = r.video; v.poster = r.imagem || ''; v.controls = true; v.playsInline = true; v.preload = 'metadata';
+        if (!REDUCE) v.autoplay = true;
+        rvBody.appendChild(v);
+      } else {
+        var p = document.createElement('p'); p.className = 'rv-empty'; p.textContent = '[Vídeo do testemunho por carregar]';
+        rvBody.appendChild(p);
+      }
+      $('.rv-modal-cap', rvModal).textContent = r.nome + ' · ' + r.marca;
+      rvModal.showModal();
+    };
+    if (rvModal) {
+      rvModal.addEventListener('close', function () { rvBody.innerHTML = ''; if (rvLast) rvLast.focus(); });
+      rvModal.addEventListener('click', function (e) { if (e.target === rvModal) rvModal.close(); });
+      $('.rv-modal-x', rvModal).addEventListener('click', function () { rvModal.close(); });
+    }
+    REVIEWS.forEach(function (r) {
+      var li = document.createElement('li');
+      li.className = 'rv-card ' + (r.tipo === 'video' ? 'rv-video' : 'rv-text');
+      var who = '<div class="rv-who"><span class="rv-logo"></span><div><span class="rv-name"></span><span class="rv-brand"></span></div></div>';
+      if (r.tipo === 'video') {
+        li.innerHTML = '<button class="rv-open" type="button"><img class="rv-thumb" alt="" loading="lazy" decoding="async"><span class="rv-play">' + PLAY + '</span>' + who + '</button>';
+        var ob = $('.rv-open', li);
+        ob.setAttribute('aria-label', 'Ver o testemunho em vídeo de ' + r.nome + ', ' + r.marca);
+        $('.rv-thumb', li).src = r.imagem;
+        ob.addEventListener('click', function () { openReview(r); });
+      } else {
+        li.innerHTML = '<figure><blockquote></blockquote><figcaption>' + who + '</figcaption></figure>';
+        $('blockquote', li).textContent = '“' + r.texto + '”';
+      }
+      $('.rv-name', li).textContent = r.nome;
+      $('.rv-brand', li).textContent = r.marca;
+      var logo = $('.rv-logo', li);
+      if (r.logo) { var im = document.createElement('img'); im.src = r.logo; im.alt = ''; logo.appendChild(im); }
+      else logo.textContent = rvInitials(r.marca.split(',').pop()) || '·';
+      rvGrid.appendChild(li);
+    });
+    var rvBtn = $('.rv-more', rvWall);
+    // o botão só aparece se houver cartões escondidos pela altura máxima
+    var rvCheck = function () {
+      if (rvWall.classList.contains('is-open')) return;
+      var more = rvGrid.offsetHeight > rvGrid.parentNode.clientHeight + 4;
+      rvWall.classList.toggle('no-more', !more);
+      rvBtn.hidden = !more;
+    };
+    rvBtn.addEventListener('click', function () {
+      var open = !rvWall.classList.contains('is-open');
+      rvWall.classList.toggle('is-open', open);
+      rvBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      $('span', rvBtn).textContent = open ? 'Ver menos' : 'Ver mais testemunhos';
+      if (!open) { rvCheck(); rvWall.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'start' }); }
+    });
+    rvCheck();
+    window.addEventListener('resize', rvCheck);
+    window.addEventListener('load', rvCheck);
   }
 
   /* ---------- Todos os Projetos: mosaico de fotografias quadradas com filtro ---------- */
