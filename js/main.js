@@ -11,10 +11,10 @@
 
   /* ---------- Dados ---------- */
   var PROJECTS = [
-    { cat: 'Restaurantes', title: 'Lota da Esquina', tagline: 'Vibrante. Sofisticado. Elegante.', url: 'https://www.meewvision.com/lota-da-esquina' },
-    { cat: 'Lojas', title: 'Flor da Selva', tagline: 'Artesanal. Familiar. Autêntico. Exclusivo.', url: 'https://www.meewvision.com/flor-da-selva' },
-    { cat: 'Hotéis', title: 'Pestana Group', tagline: 'Exclusivo. Distinto. Elegante.', url: 'https://www.meewvision.com/pestanagroup' },
-    { cat: 'Empresas', title: 'BPI Gestão de Ativos', tagline: 'Profissional. Jovem. Dinâmica. Inspiradora.', url: 'https://www.meewvision.com/bpi-gestao-de-ativos' },
+    { cat: 'Restaurantes', title: 'Lota da Esquina', tagline: 'Vibrante. Sofisticado. Elegante.', url: '/projetos/lota-da-esquina/' },
+    { cat: 'Lojas', title: 'Flor da Selva', tagline: 'Artesanal. Familiar. Autêntico. Exclusivo.', url: '/projetos/flor-da-selva/' },
+    { cat: 'Hotéis', title: 'Pestana Group', tagline: 'Exclusivo. Distinto. Elegante.', url: '/projetos/pestana-group/' },
+    { cat: 'Empresas', title: 'BPI Gestão de Ativos', tagline: 'Profissional. Jovem. Dinâmica. Inspiradora.', url: '/projetos/bpi-gestao-de-ativos/' },
     { cat: 'Influencers', title: 'ASNOVE', tagline: 'Criativa. Inspiradora. Simplista.', url: 'https://www.meewvision.com/portfolio1' }
   ];
   var FEATURED = [
@@ -33,15 +33,16 @@
     'Restaurante OZ', 'Arriba Pub', 'Buffalo', 'SOI', 'Bar13 Aqaba', 'Buda Burguers', 'Yolo Jordan', 'ASNOVE'
   ].map(function (b) { return typeof b === 'string' ? { name: b, logo: null } : b; });
   // Mosaico de "Todos os Projetos". Cada cliente pode ser só o nome ('Ayla') ou um objeto:
-  //   { name: 'Ayla', img: 'assets/img/…', vimeo: 'https://vimeo.com/…' }
+  //   { name: 'Ayla', img: 'assets/img/…', vimeo: 'https://vimeo.com/…', page: '/projetos/…/' }
+  // page: página própria do projeto (tem prioridade sobre o vimeo).
   // img: fotografia do projeto no cartão; sem img, usa-se uma das imagens da categoria (bgs), à vez.
   // vimeo: link do vídeo do projeto; sem vimeo, o cartão abre a conta da MeewVision no Vimeo (VIMEO_ALL).
   // Os 4 primeiros de cada lista aparecem em destaque (maiores).
   var VIMEO_ALL = 'https://vimeo.com/meewvision';
   var CLIENTS = [
     { label: 'Hotéis', bgs: ['pestana-salao', 'pestana-escadaria', 'pestana-rececao', 'pestana-piscina'], names: ['Pestana Palace', 'Valverde Lisboa', 'Pestana Viana do Castelo', 'Hotel Baía Cascais', 'Condes de Azevedo', 'Pestana Alvor Praia', 'Intercontinental Estoril', 'Bratus', 'Pestana Serra da Estrela', 'Pestana Alvor', 'Ayla', 'Almalusa Alfama', 'Ukino', 'Pestana Castelo Óbidos', 'Pousada de Lisboa', 'Pestana Palace 25 anos'] },
-    { label: 'Restaurantes', bgs: ['lota-polvo', 'lota-prato', 'lota-sopa', 'lota-evento'], names: ['Palácio do Grilo', 'Arriba Pub', 'Lota da Esquina', 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
-    { label: 'Marcas', bgs: ['flor-torra', 'bpi-entrevista', 'flor-graos', 'bpi-gestor', 'flor-maos', 'influencer'], names: ['Volkswagen Portugal', 'Neida Ceramics', 'Flor da Selva', 'Embaixada da Austrália', 'Moss', 'Sandeman', 'MJT Construction', 'Yolo Jordan', 'The Lisbon Frame'] }
+    { label: 'Restaurantes', bgs: ['lota-polvo', 'lota-prato', 'lota-sopa', 'lota-evento'], names: ['Palácio do Grilo', 'Arriba Pub', { name: 'Lota da Esquina', page: '/projetos/lota-da-esquina/' }, 'Soya Noodles', 'Buffalo', 'AQA Farina', 'La Firma', 'Restaurante OZ', 'Avec Bakery', 'Bar13 Aqaba', 'SOI', 'Buda Burguers', 'EsteOeste', 'La Gran Boca'] },
+    { label: 'Marcas', bgs: ['flor-torra', 'bpi-entrevista', 'flor-graos', 'bpi-gestor', 'flor-maos', 'influencer'], names: ['Volkswagen Portugal', 'Neida Ceramics', { name: 'Flor da Selva', page: '/projetos/flor-da-selva/' }, 'Embaixada da Austrália', 'Moss', 'Sandeman', 'MJT Construction', 'Yolo Jordan', 'The Lisbon Frame'] }
   ];
 
   // Testemunhos. Dois tipos de cartão: { tipo: 'texto', texto, nome, marca, logo } e
@@ -228,6 +229,8 @@
       h3.textContent = pr.title; tl.textContent = pr.tagline;
       dds[0].textContent = pr.cat; dds[1].textContent = f.type;
       go.href = pr.url; go.setAttribute('aria-label', 'Ver projeto completo: ' + pr.title);
+      // páginas do site novo abrem no mesmo separador; as antigas (Squarespace) num novo
+      if (pr.url.charAt(0) === '/') go.removeAttribute('target'); else go.target = '_blank';
       count.textContent = '0' + (fi + 1) + ' / 0' + n;
       box.style.animation = 'none'; void box.offsetWidth; box.style.animation = '';
     };
@@ -426,8 +429,9 @@
           '<h3 class="tile-name"></h3></a>';
         $('.tile-name', li).textContent = cl.name;
         var link = $('.tile-in', li);
-        link.href = cl.vimeo || VIMEO_ALL;
-        link.setAttribute('aria-label', 'Ver o vídeo de ' + cl.name + ' no Vimeo (abre num novo separador)');
+        // projeto com página própria: abre a página no mesmo separador; senão abre o vídeo no Vimeo
+        if (cl.page) { link.href = cl.page; link.removeAttribute('target'); link.setAttribute('aria-label', 'Ver o projeto ' + cl.name); }
+        else { link.href = cl.vimeo || VIMEO_ALL; link.setAttribute('aria-label', 'Ver o vídeo de ' + cl.name + ' no Vimeo (abre num novo separador)'); }
         bento.appendChild(li);
       });
       if (live) live.textContent = c.names.length + ' projetos em ' + c.label;
@@ -440,6 +444,105 @@
     window.addEventListener('resize', function () { if (cssNum('--cols') !== lastCols) render(); });
     render();
   }
+
+  /* ---------- Página de projeto: galeria com janela de ampliação e vídeos do Vimeo ---------- */
+  var lb = $('#pj-lightbox');
+  if (lb && lb.showModal) {
+    var shots = $$('.pj-shot'), lbImg = $('img', lb), lbCount = $('.pj-lb-count', lb), li = 0, lbLast = null;
+    var showShot = function (i) {
+      li = (i + shots.length) % shots.length;
+      lbImg.src = shots[li].dataset.full;
+      lbCount.textContent = (li + 1) + ' / ' + shots.length;
+    };
+    shots.forEach(function (b, i) { b.addEventListener('click', function () { lbLast = b; showShot(i); lb.showModal(); }); });
+    $('.pj-lb-prev', lb).addEventListener('click', function () { showShot(li - 1); });
+    $('.pj-lb-next', lb).addEventListener('click', function () { showShot(li + 1); });
+    $('.pj-lb-close', lb).addEventListener('click', function () { lb.close(); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
+    lb.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') showShot(li + 1);
+      if (e.key === 'ArrowLeft') showShot(li - 1);
+    });
+    lb.addEventListener('close', function () { lbImg.removeAttribute('src'); if (lbLast) lbLast.focus(); });
+  }
+  // reels em carrossel 3D: o reel ativo fica ao centro; os outros recuam para os lados (circular a partir de 3 reels)
+  var reelList = $('#pj-reel-list'), reelCtl = $('.pj-reels-ctl');
+  if (reelList) {
+    var reels = Array.prototype.slice.call(reelList.children), rn = reels.length, rc = 0;
+    var placeReels = function () {
+      var w = reels[0] ? reels[0].offsetWidth : 280;   // offsetWidth ignora a escala aplicada
+      var gap = 1.05;   // distância entre centros, em larguras de reel (deixa espaço entre os vídeos)
+      reels.forEach(function (li, i) {
+        var d = i - rc;
+        if (rn >= 3) { if (d > rn / 2) d -= rn; if (d < -rn / 2) d += rn; }   // o caminho mais curto, à volta
+        var ad = Math.abs(d), sgn = d < 0 ? -1 : 1;
+        var x = ad === 0 ? 0 : sgn * w * (gap + (ad - 1) * gap * 0.8);
+        var sc = ad === 0 ? 1 : Math.max(0.62, 1 - ad * 0.16);
+        li.style.setProperty('--x', x.toFixed(1) + 'px');
+        li.style.setProperty('--s', sc.toFixed(3));
+        li.style.setProperty('--r', (ad === 0 ? 0 : -sgn * Math.min(ad * 7, 12)) + 'deg');
+        li.style.setProperty('--o', ad > 2 ? '0' : '1');
+        li.style.setProperty('--dim', ad === 0 ? '0' : (0.18 + ad * 0.12).toFixed(2));
+        li.style.zIndex = String(10 - ad);
+        li.classList.toggle('is-center', ad === 0);
+        li.inert = ad !== 0;
+        var num = $('.pj-reel-n', li); if (num) num.textContent = (i + 1) + ' / ' + rn;
+      });
+    };
+    var goReel = function (i) { rc = (i + rn) % rn; placeReels(); };
+    reels.forEach(function (li, i) { li.addEventListener('click', function () { if (i !== rc) goReel(i); }); });
+    if (reelCtl && rn > 1) {
+      reelCtl.hidden = false;
+      var rb = $$('.icon-btn', reelCtl);
+      rb[0].addEventListener('click', function () { goReel(rc - 1); });
+      rb[1].addEventListener('click', function () { goReel(rc + 1); });
+    }
+    reelList.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); goReel(rc + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goReel(rc - 1); }
+    });
+    var rx0 = null;
+    reelList.addEventListener('pointerdown', function (e) { rx0 = e.clientX; });
+    reelList.addEventListener('pointerup', function (e) {
+      if (rx0 === null) return; var dx = e.clientX - rx0; rx0 = null;
+      if (Math.abs(dx) > 40) goReel(rc + (dx < 0 ? 1 : -1));
+    });
+    reelList.addEventListener('pointercancel', function () { rx0 = null; });
+    placeReels();
+    window.addEventListener('resize', placeReels);
+  }
+  // galeria sem limite: a partir da 14.ª fotografia aparece o botão "Ver mais" (a janela de ampliação percorre todas)
+  var pjGrid = $('#pj-grid'), pjMore = $('.pj-more');
+  if (pjGrid && pjMore) {
+    var GAL_VISIBLE = 13, extra = Array.prototype.slice.call(pjGrid.children, GAL_VISIBLE);
+    if (extra.length) {
+      extra.forEach(function (li) { li.hidden = true; });
+      pjMore.hidden = false;
+      pjMore.addEventListener('click', function () {
+        var open = pjMore.getAttribute('aria-expanded') !== 'true';
+        extra.forEach(function (li) { li.hidden = !open; });
+        pjMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+        $('span', pjMore).textContent = open ? 'Ver menos' : 'Ver mais';
+        if (!open) pjGrid.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'start' });
+      });
+    }
+  }
+  // vídeos com data-vimeo="<id>": ao carregar, o vídeo do Vimeo substitui a capa e começa a tocar
+  $$('.pj-video[data-vimeo]').forEach(function (v) {
+    var played = false;
+    var play = function () {
+      if (played) return; played = true;
+      var f = document.createElement('iframe');
+      f.src = 'https://player.vimeo.com/video/' + v.dataset.vimeo + '?autoplay=1&title=0&byline=0&portrait=0';
+      f.allow = 'autoplay; fullscreen; picture-in-picture'; f.allowFullscreen = true;
+      f.title = v.getAttribute('aria-label') || 'Vídeo';
+      f.className = 'pj-iframe';
+      v.appendChild(f); v.removeAttribute('role'); v.removeAttribute('tabindex');
+    };
+    v.setAttribute('role', 'button'); v.tabIndex = 0;
+    v.addEventListener('click', play);
+    v.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+  });
 
   /* ---------- Formulário de contacto ---------- */
   var form = $('.contact form');
