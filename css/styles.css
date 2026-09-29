@@ -388,7 +388,9 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
    fotografia com cantos arredondados e "Ler mais" em baixo */
 .track-x{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:max(var(--gutter),calc((100% - var(--content)) / 2));padding:8px max(var(--gutter),calc((100% - var(--content)) / 2)) 24px;list-style:none;margin:0;scrollbar-width:none;overscroll-behavior-x:contain}
 .track-x::-webkit-scrollbar{display:none}
-.dcard{--h:324px;flex:0 0 320px;height:var(--h);scroll-snap-align:start;display:flex;flex-direction:column;padding:14px 14px 12px;border-radius:24px;background:linear-gradient(180deg,#2A2024,#1B1417 55%);color:#F1EBDF;box-shadow:0 30px 50px -36px rgba(27,20,23,.55),inset 0 1px 0 rgba(241,235,223,.08);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+/* computador: os 4 cartões dividem a largura da grelha e as setas escondem-se; tablet e telemóvel: carrossel */
+#servicos .scar-ctl{display:none}
+.dcard{--h:324px;flex:1 1 0;min-width:0;height:var(--h);scroll-snap-align:start;display:flex;flex-direction:column;padding:14px 14px 12px;border-radius:24px;background:linear-gradient(180deg,#2A2024,#1B1417 55%);color:#F1EBDF;box-shadow:0 30px 50px -36px rgba(27,20,23,.55),inset 0 1px 0 rgba(241,235,223,.08);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
 .dcard:hover{transform:translateY(-4px)}
 /* mesmo tamanho dos títulos dos cartões de "Como Trabalhamos" (.step h3) */
 .dcard h3{margin:2px 10px 10px;min-height:2.4em;display:flex;align-items:center;justify-content:center;text-align:center;font-size:20px;font-weight:650;line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
@@ -462,6 +464,8 @@ html{scroll-behavior:auto}
 
 @media (max-width:1180px){
 :root{--gutter:40px;--sec-y:88px}
+#servicos .scar-ctl{display:flex}
+.dcard{flex:0 0 320px}
 .contact-left,.form-area{grid-column:1 / -1}
 .form-area{margin-top:36px}
 .contact-grid{align-items:start}
