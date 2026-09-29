@@ -385,20 +385,25 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .scar-ctl{display:flex;align-items:center;gap:8px}
 .scar-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:40px}
 .scar-head p.sub{margin:18px 0 0;max-width:52ch;font-size:17px;line-height:1.55;color:#5E524D}
-/* Serviços: carrossel de cartões escuros (referência "Trojena Mountain"): ícone e seta em cima, título ao centro,
-   fotografia com cantos arredondados e descrição curta em baixo */
+/* Serviços: carrossel de cartões escuros (referência "Trojena Mountain"): título ao centro em cima,
+   fotografia com cantos arredondados e "Ler mais" em baixo */
 .track-x{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:max(var(--gutter),calc((100% - var(--content)) / 2));padding:8px max(var(--gutter),calc((100% - var(--content)) / 2)) 24px;list-style:none;margin:0;scrollbar-width:none;overscroll-behavior-x:contain}
 .track-x::-webkit-scrollbar{display:none}
-.dcard{flex:0 0 320px;scroll-snap-align:start;display:flex;flex-direction:column;padding:14px 14px 20px;border-radius:24px;background:linear-gradient(180deg,#2A2024,#1B1417 55%);color:#F1EBDF;box-shadow:0 30px 50px -36px rgba(27,20,23,.55),inset 0 1px 0 rgba(241,235,223,.08);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.dcard{--h:324px;flex:0 0 320px;height:var(--h);scroll-snap-align:start;display:flex;flex-direction:column;padding:14px 14px 12px;border-radius:24px;background:linear-gradient(180deg,#2A2024,#1B1417 55%);color:#F1EBDF;box-shadow:0 30px 50px -36px rgba(27,20,23,.55),inset 0 1px 0 rgba(241,235,223,.08);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
 .dcard:hover{transform:translateY(-4px)}
-.dcard-top{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 0}
-.dcard-ic{display:grid;place-items:center;width:40px;height:40px;color:#E6DECF}
-.dcard-ic svg{width:24px;height:24px}
-.dcard h3{margin:8px 10px 16px;min-height:2.1em;display:flex;align-items:center;justify-content:center;text-align:center;font-size:26px;font-weight:700;line-height:1.02;letter-spacing:-.035em;text-wrap:balance}
-.dcard-img{aspect-ratio:4 / 3;border-radius:16px;overflow:hidden;background:#241B1F}
+/* mesmo tamanho dos títulos dos cartões de "Como Trabalhamos" (.step h3) */
+.dcard h3{margin:2px 10px 10px;min-height:2.4em;display:flex;align-items:center;justify-content:center;text-align:center;font-size:20px;font-weight:650;line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+/* a fotografia ocupa 55% da altura do cartão; a descrição abre por cima dela com "Ler mais" */
+.dcard-img{position:relative;flex:none;height:calc(var(--h) * .55);border-radius:16px;overflow:hidden;background:#241B1F}
 .dcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 .dcard:hover .dcard-img img{transform:scale(1.05)}
-.dcard p{margin:14px 10px 0;text-align:center;font-size:14px;line-height:1.5;color:#B8ACA4;text-wrap:balance}
+.dcard-desc{position:absolute;inset:0;display:flex;align-items:flex-end;padding:16px;background:linear-gradient(0deg,rgba(20,15,17,.94),rgba(20,15,17,.78) 55%,rgba(20,15,17,.35));opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .4s,transform .5s cubic-bezier(.2,.7,.2,1),visibility 0s .5s}
+.dcard-desc.open{opacity:1;visibility:visible;transform:none;transition:opacity .4s,transform .5s cubic-bezier(.2,.7,.2,1),visibility 0s}
+.dcard-desc p{margin:0;text-align:center;font-size:14px;line-height:1.5;color:#F1EBDF;text-wrap:balance}
+.dcard-more{align-self:center;display:inline-flex;align-items:center;gap:6px;margin-top:auto;min-height:34px;padding:0 8px;border:0;background:none;color:#E6DECF;font:500 14px/1.2 "Bricolage Grotesque",sans-serif;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(230,222,207,.35);text-underline-offset:4px;transition:color .3s,text-decoration-color .3s}
+.dcard-more:hover{color:#F2C14E;text-decoration-color:currentColor}
+.dcard-more svg{width:12px;height:12px;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.dcard-more[aria-expanded="true"] svg{transform:rotate(180deg)}
 
 .scar-ctl .icon-btn{width:42px;height:42px}
 .scar-ctl .icon-btn svg{width:16px;height:16px}
@@ -550,9 +555,8 @@ html{scroll-behavior:auto}
 .seg button{flex:1 1 0;min-width:0;justify-content:center;min-height:44px;padding:0 6px;gap:5px;font-size:14px}
 .seg .n{font-size:10px}
 .pgrid{--cols:3;--g:8px}
-.dcard{flex-basis:78vw;padding:12px 12px 18px;border-radius:22px}
-.dcard h3{font-size:22px;margin:4px 8px 12px}
-.dcard-ic{width:36px;height:36px}
+.dcard{--h:300px;flex-basis:78vw;padding:12px 12px 10px;border-radius:22px}
+.dcard h3{margin:0 8px 8px}
 .wall-title{font-size:52px}
 .wall-title span + span{-webkit-text-stroke:1px #F1EBDF}
 .seg{align-self:stretch;margin-top:24px}

@@ -173,6 +173,17 @@
     if (ctl[1]) ctl[1].addEventListener('click', function () { step(1); });
   }
 
+  /* ---------- Serviços: "Ler mais" / "Ler menos" (a descrição abre por cima da fotografia) ---------- */
+  $$('.dcard-more').forEach(function (b) {
+    var desc = document.getElementById(b.getAttribute('aria-controls')), label = $('span', b);
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      desc.classList.toggle('open', open);
+      label.textContent = open ? 'Ler menos' : 'Ler mais';
+    });
+  });
+
   /* ---------- Carrossel de passos ("Como Trabalhamos", tablet e telemóvel) ---------- */
   var stepsTrack = $('#steps-track');
   if (stepsTrack) {
