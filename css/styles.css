@@ -363,7 +363,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .overlay ul a:hover{color:#E4502E}
 
 /* NOVO B: carrossel de serviços */
-.scar{padding:var(--sec-y) 0}
+.scar{padding:var(--sec-y) 0;overflow-x:clip}
 /* duas secções creme seguidas: não somar os dois espaços */
 .sectors-sec + .about{padding-top:40px}
 
@@ -382,29 +382,26 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* transição hero -> serviços: o hero é um "ecrã" com cantos concêntricos com a moldura do visor (.vf) e a secção creme passa por baixo */
 .hero{z-index:2;border-radius:0 0 52px 52px}
 .hero + .scar{position:relative;z-index:1;margin-top:-52px;padding-top:calc(52px + 88px)}
+.scar-ctl{display:flex;align-items:center;gap:8px}
 .scar-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:40px}
 .scar-head p.sub{margin:18px 0 0;max-width:52ch;font-size:17px;line-height:1.55;color:#5E524D}
-.scar-ctl{display:flex;align-items:center;gap:8px}
+/* Serviços: carrossel de cartões escuros (referência "Trojena Mountain"): ícone e seta em cima, título ao centro,
+   fotografia com cantos arredondados e descrição curta em baixo */
+.track-x{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:max(var(--gutter),calc((100% - var(--content)) / 2));padding:8px max(var(--gutter),calc((100% - var(--content)) / 2)) 24px;list-style:none;margin:0;scrollbar-width:none;overscroll-behavior-x:contain}
+.track-x::-webkit-scrollbar{display:none}
+.dcard{flex:0 0 320px;scroll-snap-align:start;display:flex;flex-direction:column;padding:14px 14px 20px;border-radius:24px;background:linear-gradient(180deg,#2A2024,#1B1417 55%);color:#F1EBDF;box-shadow:0 30px 50px -36px rgba(27,20,23,.55),inset 0 1px 0 rgba(241,235,223,.08);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.dcard:hover{transform:translateY(-4px)}
+.dcard-top{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 0}
+.dcard-ic{display:grid;place-items:center;width:40px;height:40px;color:#E6DECF}
+.dcard-ic svg{width:24px;height:24px}
+.dcard h3{margin:8px 10px 16px;min-height:2.1em;display:flex;align-items:center;justify-content:center;text-align:center;font-size:26px;font-weight:700;line-height:1.02;letter-spacing:-.035em;text-wrap:balance}
+.dcard-img{aspect-ratio:4 / 3;border-radius:16px;overflow:hidden;background:#241B1F}
+.dcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.dcard:hover .dcard-img img{transform:scale(1.05)}
+.dcard p{margin:14px 10px 0;text-align:center;font-size:14px;line-height:1.5;color:#B8ACA4;text-wrap:balance}
+
 .scar-ctl .icon-btn{width:42px;height:42px}
 .scar-ctl .icon-btn svg{width:16px;height:16px}
-.track-x{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:max(var(--gutter),calc((100% - var(--content)) / 2));padding:0 max(var(--gutter),calc((100% - var(--content)) / 2)) 12px;list-style:none;margin:0;scrollbar-width:none;overscroll-behavior-x:contain}
-.track-x::-webkit-scrollbar{display:none}
-/* cartão de serviço simples: fotografia, título e "Ler mais" que abre a descrição por baixo */
-.scard{flex:0 0 272px;scroll-snap-align:start}
-.scard-img{position:relative;aspect-ratio:4 / 4.6;overflow:hidden;background:#E6DECF}
-.scard-img img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
-.scard:hover .scard-img img{transform:scale(1.04)}
-.scard-body{padding-top:16px}
-.scard h3{margin:0;font-size:18px;font-weight:650;letter-spacing:-.02em;line-height:1.15}
-.scard-more{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 0;border:0;background:none;color:#7A4A3A;font:500 14px/1.2 "Bricolage Grotesque",sans-serif;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(122,74,58,.35);text-underline-offset:4px;transition:color .3s,text-decoration-color .3s}
-.scard-more:hover{color:#1B1417;text-decoration-color:currentColor}
-.scard-more svg{width:12px;height:12px;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
-.scard-more[aria-expanded="true"] svg{transform:rotate(180deg)}
-/* a descrição abre e fecha com uma transição de altura (grid 0fr -> 1fr); fechada fica invisível também para leitores de ecrã */
-.scard-desc{display:grid;grid-template-rows:0fr;visibility:hidden;opacity:0;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1),opacity .35s,visibility 0s .45s}
-.scard-desc > p{overflow:hidden;min-height:0;margin:0}
-.scard-desc.open{grid-template-rows:1fr;visibility:visible;opacity:1;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1),opacity .35s .1s,visibility 0s}
-.scard p{font-size:15px;line-height:1.55;color:#5E524D}
 
 /* NOVO D: trabalho selecionado (destaque full-bleed) */
 .feat{position:relative;height:clamp(520px,68vh,620px);overflow:hidden;color:#F1EBDF;background:#140F11}
@@ -441,11 +438,6 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 }
 @media (max-width:860px){
 .logos-in{flex-direction:column;align-items:stretch;gap:12px}
-.scard{flex-basis:60vw}
-.scard-img{aspect-ratio:1 / 1}
-.scard-body{padding-top:12px}
-.scard h3{font-size:17px}
-.scard p{font-size:14px}
 .feat{height:auto;min-height:520px}
 .feat-in{padding-top:48px;padding-bottom:28px;min-height:520px;gap:40px}
 .feat-go{width:44px;height:44px}
@@ -558,6 +550,9 @@ html{scroll-behavior:auto}
 .seg button{flex:1 1 0;min-width:0;justify-content:center;min-height:44px;padding:0 6px;gap:5px;font-size:14px}
 .seg .n{font-size:10px}
 .pgrid{--cols:3;--g:8px}
+.dcard{flex-basis:78vw;padding:12px 12px 18px;border-radius:22px}
+.dcard h3{font-size:22px;margin:4px 8px 12px}
+.dcard-ic{width:36px;height:36px}
 .wall-title{font-size:52px}
 .wall-title span + span{-webkit-text-stroke:1px #F1EBDF}
 .seg{align-self:stretch;margin-top:24px}

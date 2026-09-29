@@ -164,7 +164,7 @@
   var track = $('#scar-track');
   if (track) {
     var step = function (dir) {
-      var card = $('.scard', track);
+      var card = $('.dcard', track);
       var w = card ? card.getBoundingClientRect().width + 18 : 340;
       track.scrollBy({ left: dir * w, behavior: REDUCE ? 'auto' : 'smooth' });
     };
@@ -234,17 +234,6 @@
     setDur();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDur);
   }
-
-  /* ---------- Serviços: "Ler mais" / "Ler menos" em cada cartão ---------- */
-  $$('.scard-more').forEach(function (b) {
-    var desc = document.getElementById(b.getAttribute('aria-controls')), label = $('span', b);
-    b.addEventListener('click', function () {
-      var open = b.getAttribute('aria-expanded') !== 'true';
-      b.setAttribute('aria-expanded', open ? 'true' : 'false');
-      desc.classList.toggle('open', open);
-      label.textContent = open ? 'Ler menos' : 'Ler mais';
-    });
-  });
 
   /* ---------- Todos os Projetos: mosaico de fotografias quadradas com filtro ---------- */
   // Todos os projetos da categoria ficam visíveis. Os 4 primeiros de cada lista são os destaques (--lg células);
