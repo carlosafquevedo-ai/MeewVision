@@ -82,7 +82,7 @@
     });
     el.addEventListener('pointerleave', function () { rect = null; set({ '--tx': '0', '--ty': '0' }); });
   }
-  $$('.collage, .step').forEach(bindTilt);
+  $$('.collage, .step, .pj-work-list > li').forEach(bindTilt);
 
   /* ---------- Navegação: fundo sólido depois do hero + menu móvel ---------- */
   var nav = $('.nav');
