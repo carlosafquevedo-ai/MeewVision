@@ -75,6 +75,9 @@ img{display:block}
 .hero-media{position:absolute;inset:-4%;transform:translate3d(calc(var(--mx) * -22px),calc(var(--my) * -16px),0) scale(1.02);transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
 .hero-media img,.hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.86) saturate(.92)}
 .hero-media img{animation:kenburns 26s ease-in-out infinite alternate;transform-origin:62% 40%}
+/* leitor do Vimeo por cima da capa: tamanho calculado no JS para cobrir o hero (como object-fit: cover); aparece em fade quando começa a tocar */
+.hero-vimeo{position:absolute;left:50%;top:50%;border:0;pointer-events:none;transform:translate(-50%,-50%);filter:brightness(.86) saturate(.92);opacity:0;transition:opacity 1.2s ease}
+.hero-vimeo.is-on{opacity:1}
 @keyframes kenburns{from{transform:scale(1.02) translate3d(0,0,0)}to{transform:scale(1.16) translate3d(-2%,-1.5%,0)}}
 .hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,15,17,.82) 0%,rgba(20,15,17,.62) 32%,rgba(20,15,17,.18) 62%,rgba(20,15,17,0) 80%),linear-gradient(180deg,rgba(20,15,17,.55) 0%,rgba(20,15,17,.1) 28%,rgba(20,15,17,.4) 60%,rgba(20,15,17,.94) 100%),rgba(20,15,17,.22)}
 .hero-scan{position:absolute;inset:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px);mix-blend-mode:overlay}

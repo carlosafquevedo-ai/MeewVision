@@ -138,6 +138,49 @@
     });
   }
 
+  /* ---------- Hero: vídeo de fundo do Vimeo ---------- */
+  // Só com movimento permitido. O leitor é 16:9 e é redimensionado para cobrir o hero (os lados ou o topo ficam cortados).
+  var heroMedia = $('.hero-media[data-vimeo]');
+  if (heroMedia && !REDUCE) {
+    var hv = document.createElement('iframe');
+    hv.className = 'hero-vimeo';
+    hv.src = 'https://player.vimeo.com/video/' + heroMedia.dataset.vimeo + '?background=1&autoplay=1&loop=1&muted=1&autopause=0&dnt=1';
+    hv.allow = 'autoplay; fullscreen; picture-in-picture';
+    hv.title = 'Vídeo de fundo'; hv.tabIndex = -1;
+    var fitHero = function () {
+      var w = heroMedia.clientWidth, h = heroMedia.clientHeight;
+      if (w / h > 16 / 9) { hv.style.width = w + 'px'; hv.style.height = Math.ceil(w * 9 / 16) + 'px'; }
+      else { hv.style.height = h + 'px'; hv.style.width = Math.ceil(h * 16 / 9) + 'px'; }
+    };
+    fitHero();
+    heroMedia.appendChild(hv);
+    // Corte do vídeo (data-start/data-end, em segundos): salta para o início do corte e, ao chegar ao fim do corte,
+    // volta ao início. O leitor só aparece (fade) quando já está dentro do corte, para não se ver o texto do início.
+    var vStart = parseFloat(heroMedia.dataset.start) || 0, vEnd = parseFloat(heroMedia.dataset.end) || 0;
+    var vPost = function (method, value) {
+      var m = { method: method }; if (value !== undefined) m.value = value;
+      hv.contentWindow.postMessage(JSON.stringify(m), 'https://player.vimeo.com');
+    };
+    window.addEventListener('message', function (e) {
+      if (e.origin !== 'https://player.vimeo.com' || e.source !== hv.contentWindow) return;
+      var d = e.data; try { if (typeof d === 'string') d = JSON.parse(d); } catch (err) { return; }
+      if (!d) return;
+      if (d.event === 'ready') {
+        vPost('addEventListener', 'timeupdate'); vPost('addEventListener', 'playProgress');
+        if (vStart) vPost('setCurrentTime', vStart);
+      }
+      if (d.event === 'timeupdate' || d.event === 'playProgress') {
+        var t = d.data && d.data.seconds;
+        if (typeof t !== 'number') return;
+        if (vEnd && t >= vEnd) { vPost('setCurrentTime', vStart); return; }
+        if (t >= vStart && !hv.classList.contains('is-on')) hv.classList.add('is-on');
+      }
+    });
+    // se o leitor não responder às mensagens, mostra-o na mesma ao fim de 5 s
+    hv.addEventListener('load', function () { setTimeout(function () { hv.classList.add('is-on'); }, 5000); });
+    if ('ResizeObserver' in window) new ResizeObserver(fitHero).observe(heroMedia); else window.addEventListener('resize', fitHero);
+  }
+
   /* ---------- Hero: visor de câmara (parallax, foco AF, timecode) ---------- */
   var hero = $('.hero');
   if (hero) {

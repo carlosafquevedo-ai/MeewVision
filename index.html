@@ -64,12 +64,12 @@
 <main id="conteudo">
 
 <section class="hero " id="topo" aria-labelledby="hero-title">
-<div class="hero-media" aria-hidden="true">
-<!-- VÍDEO DO HERO: para usar vídeo, coloque o ficheiro em assets/video/ e substitua o <img> abaixo por:
-<video src="assets/video/hero.mp4" poster="assets/img/pestana-salao.jpg" autoplay muted loop playsinline preload="metadata"></video> -->
-
+<div class="hero-media" aria-hidden="true" data-vimeo="1191142595" data-start="2.8" data-end="27.4">
+<!-- VÍDEO DO HERO: vídeo do Vimeo em modo de fundo (sem som, em repetição, sem botões; precisa de conta Vimeo paga).
+     O id está em data-vimeo; data-start/data-end (segundos) cortam o início e o fim (partes com texto na imagem):
+     o vídeo toca só esse intervalo, em repetição. O JS cria o leitor e ajusta-o para cobrir o hero. A fotografia fica por baixo como capa:
+     aparece enquanto o vídeo carrega e fica sozinha com "reduzir movimento" ou se o vídeo falhar. Na fase 2 vem do Sanity. -->
 <img src="assets/img/pestana-salao.jpg" alt="" width="1400" height="934" fetchpriority="high" decoding="async">
-
 </div>
 <div class="hero-shade" aria-hidden="true"></div>
 <div class="hero-scan" aria-hidden="true"></div>

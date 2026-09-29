@@ -49,7 +49,8 @@ Em ambas as Netlify: ramo de produção `main`; cada push para o `main` publica 
 
 ## Estado atual (antes da fase 1)
 
-- Site estático sem build: `index.html` + `css/styles.css` + `js/main.js` (JavaScript puro, sem dependências); imagens em `assets/img/`; `assets/video/` vazia (vídeo do hero por colocar).
+- Site estático sem build: `index.html` + `css/styles.css` + `js/main.js` (JavaScript puro, sem dependências); imagens em `assets/img/`.
+- Vídeo do hero da home: Vimeo **1191142595** ("25 Anos do Pestana Palace Lisboa", 30 s) em modo de fundo, **cortado dos 2,8 s aos 27,4 s** para não mostrar o texto do início nem o logótipo do fim (`data-vimeo`, `data-start`, `data-end` no `.hero-media` do `index.html`; o corte é feito pela API do leitor Vimeo por postMessage; o JS cria o leitor, ajusta-o para cobrir o hero e mostra-o em fade quando começa a tocar; a fotografia fica por baixo como capa e é a única coisa que aparece com "reduzir movimento"). A conta Vimeo é Starter (paga), por isso o modo de fundo sem botões funciona.
 - Conteúdo: textos no `index.html`; listas em arrays no topo de `js/main.js` (`PROJECTS`, `FEATURED`, `BRANDS`, `CLIENTS`, `VIMEO_ALL`).
 - O formulário **não envia nada** (só valida e mostra "Obrigado"; há um `TODO` em `js/main.js`).
 - Ver localmente: `npx serve .` (configurado em `.claude/launch.json`, porta 8080).
